@@ -17,6 +17,7 @@
     <?php get_template_part( 'templates/partials/site-branding' ); ?>
     <button class="nav-toggle" aria-controls="primary-menu" aria-expanded="false">
       <span class="screen-reader-text"><?php esc_html_e( 'Menu', 'viu-fcsd' ); ?></span>
+      <span class="hamburger" aria-hidden="true"></span>
     </button>
 
     <nav class="primary-nav" role="navigation" aria-label="<?php esc_attr_e( 'Primary menu', 'viu-fcsd' ); ?>">

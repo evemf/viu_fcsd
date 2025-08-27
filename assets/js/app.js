@@ -4,17 +4,19 @@
     if (navToggle && primaryNav) {
         const closeMenu = () => {
             primaryNav.classList.remove('is-open');
+            navToggle.classList.remove('is-active');
             navToggle.setAttribute('aria-expanded', 'false');
         };
 
         navToggle.addEventListener('click', () => {
             const expanded = navToggle.getAttribute('aria-expanded') === 'true';
             navToggle.setAttribute('aria-expanded', String(!expanded));
+            navToggle.classList.toggle('is-active');
             primaryNav.classList.toggle('is-open');
         });
 
         document.addEventListener('click', (e) => {
-            if (!primaryNav.contains(e.target) && e.target !== navToggle) {
+            if (!primaryNav.contains(e.target) && !navToggle.contains(e.target)) {
                 closeMenu();
             }
         });

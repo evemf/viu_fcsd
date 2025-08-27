@@ -33,3 +33,11 @@ a:focus,button:focus,select:focus{outline:2px solid #ff6f00;outline-offset:2px;}
 .site-footer{background:#e6f0ff;margin-top:2rem;padding:2rem 0;text-align:center;}
 .footer-navigation .menu{list-style:none;display:flex;gap:1rem;justify-content:center;margin:0;padding:0;}
 .language-switcher select.language-select{margin-top:1rem;padding:.25rem;}
+.site-branding img{max-height:40px;height:auto;}
+.nav-toggle .hamburger{display:block;position:relative;width:24px;height:2px;background:#000;transition:background .3s;}
+.nav-toggle .hamburger:before,.nav-toggle .hamburger:after{content:"";position:absolute;left:0;width:24px;height:2px;background:#000;transition:transform .3s,top .3s;}
+.nav-toggle .hamburger:before{top:-6px;}
+.nav-toggle .hamburger:after{top:6px;}
+.nav-toggle.is-active .hamburger{background:transparent;}
+.nav-toggle.is-active .hamburger:before{transform:rotate(45deg);top:0;}
+.nav-toggle.is-active .hamburger:after{transform:rotate(-45deg);top:0;}

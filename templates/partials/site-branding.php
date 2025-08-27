@@ -13,6 +13,8 @@ $home    = home_url( '/' . $current . '/' );
     ?>
     <a href="<?php echo esc_url( $home ); ?>" class="custom-logo-link"><?php echo $logo; ?></a>
 <?php else : ?>
-    <a class="site-title" href="<?php echo esc_url( $home ); ?>"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></a>
+    <a class="site-logo-link" href="<?php echo esc_url( $home ); ?>">
+        <img class="site-logo" src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/logo-placeholder.svg' ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+    </a>
 <?php endif; ?>
 </div>
