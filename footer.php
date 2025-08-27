@@ -1,15 +1,16 @@
 <footer class="site-footer" role="contentinfo">
   <div class="container">
-    <?php get_template_part( 'templates/partials/language', 'switcher' ); ?>
     <nav class="footer-navigation" aria-label="<?php esc_attr_e( 'Footer Menu', 'viu-fcsd' ); ?>">
       <?php
         wp_nav_menu( [
           'theme_location' => 'footer',
           'menu_class'     => 'menu footer-menu',
           'container'      => false,
+          'fallback_cb'    => false,
         ] );
       ?>
     </nav>
+    <?php get_template_part( 'templates/partials/language-switcher', null, [ 'type' => 'dropdown' ] ); ?>
     <p>&copy; <?php echo esc_html( date_i18n( 'Y' ) ); ?> <?php echo esc_html( get_bloginfo( 'name' ) ); ?></p>
   </div>
 </footer>

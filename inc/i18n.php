@@ -51,14 +51,55 @@ add_filter( 'query_vars', function ( $vars ) {
 
 add_action( 'init', function () {
     $langs = implode( '|', viu_fcsd_languages() );
-    add_rewrite_rule( '^(' . $langs . ')/(.*)$', 'index.php?lang=$matches[1]&$matches[2]', 'top' );
-    add_rewrite_rule( '^(' . $langs . ')/?$', 'index.php?lang=$matches[1]', 'top' );
+    add_rewrite_rule( '^(' . $langs . ')/(.*)/?$', 'index.php?lang=$matches[1]&pagename=$matches[2]', 'top' );
+    add_rewrite_rule( '^(' . $langs . ')/?$', 'index.php?lang=$matches[1]&pagename=$matches[1]', 'top' );
 } );
 
 add_filter( 'locale', function ( $locale ) {
-    return viu_fcsd_current_lang();
+    $map = [
+        'ca' => 'ca',
+        'es' => 'es_ES',
+        'en' => 'en_US',
+    ];
+    $lang = viu_fcsd_current_lang();
+    return $map[ $lang ] ?? $locale;
 } );
 
 add_filter( 'determine_locale', function ( $locale ) {
-    return viu_fcsd_current_lang();
+    $map = [
+        'ca' => 'ca',
+        'es' => 'es_ES',
+        'en' => 'en_US',
+    ];
+    $lang = viu_fcsd_current_lang();
+    return $map[ $lang ] ?? $locale;
 } );
+
+if ( defined( 'VIU_FCSD_I18N_DEMO' ) && VIU_FCSD_I18N_DEMO ) {
+    add_filter( 'gettext', function ( $translated, $text, $domain ) {
+        if ( 'viu-fcsd' !== $domain ) {
+            return $translated;
+        }
+
+        $demo = [
+            'ca' => [
+                'Skip to content' => 'Salta al contingut',
+                'Menu'            => 'Menú',
+                'User access'     => 'Accés usuari',
+            ],
+            'es' => [
+                'Skip to content' => 'Saltar al contenido',
+                'Menu'            => 'Menú',
+                'User access'     => 'Acceso usuario',
+            ],
+            'en' => [
+                'Skip to content' => 'Skip to content',
+                'Menu'            => 'Menu',
+                'User access'     => 'User access',
+            ],
+        ];
+
+        $lang = viu_fcsd_current_lang();
+        return $demo[ $lang ][ $text ] ?? $translated;
+    }, 10, 3 );
+}
