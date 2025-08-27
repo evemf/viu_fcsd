@@ -17,6 +17,9 @@
     <div class="site-branding">
       <?php get_template_part( 'templates/partials/site-branding' ); ?>
     </div>
+    <button class="nav-toggle" aria-controls="primary-menu" aria-expanded="false">
+      <span class="screen-reader-text"><?php esc_html_e( 'Menu', 'viu-fcsd' ); ?></span>
+    </button>
 
     <nav class="primary-nav" role="navigation" aria-label="<?php esc_attr_e( 'Primary menu', 'viu-fcsd' ); ?>">
       <?php
@@ -24,6 +27,7 @@
         'theme_location' => 'primary',
         'container'      => false,
         'menu_class'     => 'menu',
+        'menu_id'        => 'primary-menu',
         'fallback_cb'    => false,
       ] );
       ?>
@@ -32,15 +36,21 @@
         <?php
           $current = function_exists( 'viu_fcsd_current_lang' ) ? viu_fcsd_current_lang() : 'ca';
           $langs   = [ 'ca' => 'Català', 'es' => 'Español', 'en' => 'English' ];
-          echo '<ul class="lang-list">';
+          $current_label = $langs[ $current ] ?? $langs['ca'];
+        ?>
+        <button class="lang-current" aria-expanded="false">
+          <?php echo esc_html( $current_label ); ?>
+        </button>
+        <ul class="lang-list" hidden>
+          <?php
           foreach ( $langs as $code => $label ) {
             $url   = function_exists( 'viu_fcsd_switch_url' ) ? viu_fcsd_switch_url( $code ) : home_url( '/' . $code . '/' );
             $attr  = $current === $code ? ' aria-current="true" class="is-active"' : '';
             $aria  = sprintf( __( 'Change language to %s', 'viu-fcsd' ), $label );
             echo '<li><a href="' . esc_url( $url ) . '"' . $attr . ' aria-label="' . esc_attr( $aria ) . '">' . esc_html( $label ) . '</a></li>';
           }
-          echo '</ul>';
-        ?>
+          ?>
+        </ul>
       </div>
 
       <div class="donate-cta">
