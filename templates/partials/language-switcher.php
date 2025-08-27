@@ -8,16 +8,24 @@ $langs = [
     'es' => __( 'Español', 'viu-fcsd' ),
     'en' => __( 'English', 'viu-fcsd' ),
 ];
-$current = viu_fcsd_current_lang();
+$current       = function_exists( 'viu_fcsd_current_lang' ) ? viu_fcsd_current_lang() : 'ca';
+$current_label = $langs[ $current ] ?? $langs['ca'];
 ?>
-<ul class="language-switcher">
-<?php foreach ( $langs as $code => $label ) : ?>
-    <li>
-        <a href="<?php echo esc_url( viu_fcsd_switch_url( $code ) ); ?>"
-           aria-label="<?php echo esc_attr( sprintf( __( 'Switch to %s', 'viu-fcsd' ), $label ) ); ?>"
-           <?php echo $current === $code ? 'aria-current="true"' : ''; ?>>
-            <?php echo esc_html( $code ); ?>
-        </a>
-    </li>
-<?php endforeach; ?>
-</ul>
+<div class="lang-switcher" aria-label="<?php esc_attr_e( 'Language selector', 'viu-fcsd' ); ?>">
+    <button class="lang-current" aria-expanded="false">
+        <?php echo esc_html( $current_label ); ?>
+    </button>
+    <ul class="lang-list" hidden>
+        <?php foreach ( $langs as $code => $label ) :
+            $url  = function_exists( 'viu_fcsd_switch_url' ) ? viu_fcsd_switch_url( $code ) : home_url( '/' . $code . '/' );
+            $attr = $current === $code ? ' aria-current="true" class="is-active"' : '';
+            $aria = sprintf( __( 'Change language to %s', 'viu-fcsd' ), $label );
+        ?>
+        <li>
+            <a href="<?php echo esc_url( $url ); ?>"<?php echo $attr; ?> aria-label="<?php echo esc_attr( $aria ); ?>">
+                <?php echo esc_html( $label ); ?>
+            </a>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
