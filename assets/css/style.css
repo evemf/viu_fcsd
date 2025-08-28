@@ -164,7 +164,7 @@ a{ text-decoration:none; color:inherit; }
 /* =========================
    SERVICES (Waso-like tabs)
 ========================= */
-.services.section-padding{ padding:60px 0; background:#fff; color:var(--color-text); }
+.services.section-padding{ padding:60px 0; background:var(--color-surface); color:var(--color-text); }
 .services .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
 .services .row{ display:block; }
 .services .small-title{ display:block; margin-bottom:10px; }
@@ -174,13 +174,14 @@ a{ text-decoration:none; color:inherit; }
 .services__wrap{ display:grid; grid-template-columns:1fr 2fr; gap:24px; align-items:start; }
 .services__tabs{ display:flex; flex-direction:column; gap:12px; }
 .services__tab{
-  text-align:left; background:#fff; border:1px solid rgba(0,0,0,.08);
+  text-align:left; background:var(--color-surface);
+  border:1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
   border-radius:12px; padding:14px 16px; cursor:pointer;
   transition: box-shadow .2s ease, border-color .2s ease;
 }
-.services__tab.is-active,.services__tab:hover{ box-shadow:0 8px 24px rgba(0,0,0,.08); border-color:rgba(0,0,0,.12); }
+.services__tab.is-active,.services__tab:hover{ box-shadow:0 8px 24px color-mix(in srgb, var(--color-text) 12%, transparent); border-color:color-mix(in srgb, var(--color-text) 20%, transparent); }
 .services__tab-title{ margin:0 0 6px; font-size:18px; }
-.services__tab-desc{ display:block; font-size:14px; color:#666; }
+.services__tab-desc{ display:block; font-size:14px; color:var(--color-text); opacity:.7; }
 
 .services__panels{ position:relative; }
 .services__panel{ display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:center; }
@@ -188,7 +189,7 @@ a{ text-decoration:none; color:inherit; }
 .services__panel-media{ width:100%; }
 .services__image{ width:100%; height:auto; border-radius:12px; display:block; }
 .services__panel-title{ margin:0 0 10px; font-size:22px; }
-.services__panel-excerpt{ color:#555; }
+.services__panel-excerpt{ color:var(--color-text); opacity:.8; }
 .services__panel-cta .btn{ margin-top:10px; }
 
 @media (max-width:991px){
@@ -199,19 +200,20 @@ a{ text-decoration:none; color:inherit; }
 /* =========================
    STORE (Digital services)
 ========================= */
-.services.section-padding#section_store{ padding:60px 0; background:#fff; color:var(--color-text); }
+.services.section-padding#section_store{ padding:60px 0; background:var(--color-surface); color:var(--color-text); }
 
 .store-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
 @media (max-width:991px){ .store-grid{ grid-template-columns:1fr; } }
 
 .store-card{
-  background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:14px;
-  overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,.06);
+  background:var(--color-surface);
+  border:1px solid color-mix(in srgb, var(--color-text) 6%, transparent); border-radius:14px;
+  overflow:hidden; box-shadow:0 8px 24px color-mix(in srgb, var(--color-text) 6%, transparent);
 }
 .store-card__image{ width:100%; height:auto; display:block; }
 .store-card__body{ padding:16px; }
 .store-card__title{ margin:0 0 8px; font-size:20px; }
-.store-card__excerpt{ color:#666; }
+.store-card__excerpt{ color:var(--color-text); opacity:.7; }
 .store-card__buy{ display:flex; justify-content:space-between; align-items:center; margin-top:12px; }
 .store-card__price{ font-weight:700; }
 
@@ -221,14 +223,14 @@ a{ text-decoration:none; color:inherit; }
   display:flex; align-items:center; justify-content:center; z-index:9999;
 }
 .store-modal__dialog{
-  background:#fff; border-radius:12px; max-width:520px; width:92%; padding:20px; position:relative;
+  background:var(--color-surface); border-radius:12px; max-width:520px; width:92%; padding:20px; position:relative;
 }
 .store-modal__close{
   position:absolute; right:10px; top:10px; background:transparent; border:0; font-size:24px; cursor:pointer;
 }
 #store-checkout-form label{ display:block; margin:12px 0; }
 #store-checkout-form input[type=email]{ width:100%; padding:10px; border:1px solid #ccc; border-radius:8px; }
-.store-note{ font-size:.9rem; color:#666; margin-top:8px; }
+.store-note{ font-size:.9rem; color:var(--color-text); opacity:.7; margin-top:8px; }
 
 /* =========================
    FOOTER & MAP (Waso style)

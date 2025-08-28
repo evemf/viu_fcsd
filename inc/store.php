@@ -256,15 +256,15 @@ add_action('wp_enqueue_scripts', function(){
   wp_add_inline_style('viu-fcsd-style', '
     .store-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
     @media(max-width:991px){.store-grid{grid-template-columns:1fr}}
-    .store-card{background:#fff;border:1px solid rgba(0,0,0,.06);border-radius:14px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+    .store-card{background:var(--color-surface);border:1px solid color-mix(in srgb, var(--color-text) 6%, transparent);border-radius:14px;overflow:hidden;box-shadow:0 8px 24px color-mix(in srgb, var(--color-text) 6%, transparent)}
     .store-card__image{width:100%;height:auto;display:block}
     .store-card__body{padding:16px}
     .store-card__title{margin:0 0 8px;font-size:20px}
-    .store-card__excerpt{color:#666}
+    .store-card__excerpt{color:var(--color-text);opacity:.7}
     .store-card__buy{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
     .store-card__price{font-weight:700}
     .store-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:9999}
-    .store-modal__dialog{background:#fff;border-radius:12px;max-width:520px;width:92%;padding:20px;position:relative}
+    .store-modal__dialog{background:var(--color-surface);border-radius:12px;max-width:520px;width:92%;padding:20px;position:relative}
     .store-modal__close{position:absolute;right:10px;top:10px;background:transparent;border:0;font-size:24px;cursor:pointer}
     #store-checkout-form label{display:block;margin:12px 0}
     #store-checkout-form input[type=email]{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px}

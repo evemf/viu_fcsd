@@ -53,3 +53,12 @@ if ( ! function_exists( 'viu_fcsd_enqueue_assets' ) ) {
     }
 }
 add_action( 'wp_enqueue_scripts', 'viu_fcsd_enqueue_assets' );
+
+// Allow SVG uploads so the custom logo can use that format.
+if ( ! function_exists( 'viu_fcsd_allow_svg_upload' ) ) {
+    function viu_fcsd_allow_svg_upload( $mimes ) {
+        $mimes['svg'] = 'image/svg+xml';
+        return $mimes;
+    }
+}
+add_filter( 'upload_mimes', 'viu_fcsd_allow_svg_upload' );
