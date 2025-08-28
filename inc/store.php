@@ -5,6 +5,54 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
+// Simple session-based cart.
+add_action('init', function(){
+  if (!session_id()) {
+    session_start();
+  }
+}, 1);
+
+// Create cart page on theme activation.
+function viu_store_create_cart_page(){
+  if (!get_page_by_path('cart')) {
+    wp_insert_post([
+      'post_type'   => 'page',
+      'post_status' => 'publish',
+      'post_title'  => __('Cart', 'viu-fcsd'),
+      'post_name'   => 'cart',
+    ]);
+  }
+}
+add_action('after_switch_theme', 'viu_store_create_cart_page');
+
+// Handle cart actions.
+add_action('template_redirect', function(){
+  if (isset($_POST['add_to_cart'])) {
+    $id = intval($_POST['product_id'] ?? 0);
+    if ($id) {
+      $_SESSION['cart'][$id] = ($_SESSION['cart'][$id] ?? 0) + 1;
+      wp_safe_redirect(home_url('/cart'));
+      exit;
+    }
+  }
+
+  if (isset($_POST['buy_now'])) {
+    $id = intval($_POST['product_id'] ?? 0);
+    if ($id) {
+      $_SESSION['cart'] = [$id => 1];
+      wp_safe_redirect(home_url('/cart'));
+      exit;
+    }
+  }
+
+  if (isset($_POST['remove_from_cart'])) {
+    $id = intval($_POST['remove_from_cart']);
+    unset($_SESSION['cart'][$id]);
+    wp_safe_redirect(home_url('/cart'));
+    exit;
+  }
+});
+
 /* --------------------------
  *  A) Custom Post Types
  * --------------------------*/
@@ -184,90 +232,45 @@ function viu_store_get_settings(){
  *  C) Shortcode de tienda
  * --------------------------*/
 
-add_shortcode('digital_store', function($atts=[]){
+add_shortcode('digital_store', function($atts = []){
   $atts = shortcode_atts([
-    'title'   => __('Store', 'viu-fcsd'),
-    'subtitle'=> __('Store', 'viu-fcsd'),
-    'limit'   => 12,
+    'title' => __('Store', 'viu-fcsd'),
+    'limit' => 12,
   ], $atts, 'digital_store');
 
   $q = new WP_Query([
-    'post_type'=>'product',
-    'posts_per_page'=> (int)$atts['limit'],
-    'orderby'=>'menu_order title',
-    'order'=>'ASC',
+    'post_type'      => 'product',
+    'posts_per_page' => intval($atts['limit']),
   ]);
 
-  ob_start(); ?>
-  <section class="services section-padding" id="section_store">
-    <div class="container">
-      <div class="row">
-        <div class="col col--intro text-center mx-auto mb-5">
-          <h2><?php echo esc_html($atts['title']); ?></h2>
-        </div>
-
-        <div class="store-grid">
-          <?php if($q->have_posts()): while($q->have_posts()): $q->the_post();
-            $id = get_the_ID();
-            $price = get_post_meta($id,'_viu_price', true);
-            $currency = get_post_meta($id,'_viu_currency', true) ?: 'EUR';
-            $is_sub = (bool) get_post_meta($id,'_viu_is_subscription', true);
-            $interval = get_post_meta($id,'_viu_interval', true) ?: 'month';
-            $interval_count = (int)(get_post_meta($id,'_viu_interval_count', true) ?: 1);
-          ?>
-            <article class="store-card">
-              <a class="store-card__media" href="<?php the_permalink(); ?>">
-                <?php if (has_post_thumbnail()) { the_post_thumbnail('large', ['class'=>'store-card__image','alt'=>esc_attr(get_the_title())]); } ?>
-              </a>
-              <div class="store-card__body">
-                <h3 class="store-card__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-                <?php if(has_excerpt()): ?><p class="store-card__excerpt"><?php echo esc_html(get_the_excerpt()); ?></p><?php endif; ?>
-                <div class="store-card__buy">
-                  <div class="store-card__price">
-                    <?php
-                      $amount = number_format_i18n((float)$price, 2);
-                      echo esc_html($currency.' '.$amount);
-                      if($is_sub){ echo ' / '.esc_html($interval_count.' '.$interval); }
-                    ?>
-                  </div>
-                  <button class="custom-btn btn custom-link js-buy"
-                          data-product="<?php echo esc_attr($id); ?>">
-                    <?php echo $is_sub ? esc_html__('Subscribe', 'viu-fcsd') : esc_html__('Buy now', 'viu-fcsd'); ?>
-                  </button>
-                </div>
-              </div>
-            </article>
-          <?php endwhile; wp_reset_postdata(); else: ?>
-            <p><?php esc_html_e('No hay productos todavía.', 'viu-fcsd'); ?></p>
-          <?php endif; ?>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal de checkout -->
-    <div class="store-modal" id="store-modal" hidden>
-      <div class="store-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="store-modal-title">
-        <button class="store-modal__close" aria-label="<?php esc_attr_e('Cerrar','viu-fcsd'); ?>">&times;</button>
-        <h3 id="store-modal-title"><?php esc_html_e('Finalizar compra','viu-fcsd'); ?></h3>
-        <form id="store-checkout-form">
-          <input type="hidden" name="product_id" id="store-product-id">
-          <label>
-            <?php esc_html_e('Email (recibo y acceso):','viu-fcsd'); ?>
-            <input type="email" name="email" id="store-email" required>
-          </label>
-          <button type="submit" class="button button-primary" id="store-pay-btn">
-            <?php esc_html_e('Pagar','viu-fcsd'); ?>
-          </button>
-          <p class="store-note">
-            <?php $opt = viu_store_get_settings(); ?>
-            <?php echo esc_html__('Proveedor de pago: ', 'viu-fcsd').'<strong>'.esc_html(ucfirst($opt['provider'])).'</strong>'; ?>
-          </p>
-        </form>
-        <div id="paypal-buttons-container" style="display:none;"></div>
-      </div>
-    </div>
-  </section>
-  <?php
+  ob_start();
+  echo '<div class="digital-store">';
+  if ($q->have_posts()) {
+    while ($q->have_posts()) {
+      $q->the_post();
+      $id = get_the_ID();
+      $price = (float) get_post_meta($id, '_viu_price', true);
+      $currency = get_post_meta($id, '_viu_currency', true) ?: 'EUR';
+      echo '<div class="digital-item">';
+      if (has_post_thumbnail()) {
+        echo '<a href="' . esc_url(get_permalink()) . '">';
+        the_post_thumbnail('medium');
+        echo '</a>';
+      }
+      echo '<h3>' . esc_html(get_the_title()) . '</h3>';
+      echo '<p>' . esc_html($currency . ' ' . number_format_i18n($price, 2)) . '</p>';
+      echo '<form method="post" class="digital-item__form">';
+      echo '<input type="hidden" name="product_id" value="' . esc_attr($id) . '">';
+      echo '<button type="submit" name="add_to_cart">' . esc_html__('Add to cart', 'viu-fcsd') . '</button> ';
+      echo '<button type="submit" name="buy_now">' . esc_html__('Buy now', 'viu-fcsd') . '</button>';
+      echo '</form>';
+      echo '</div>';
+    }
+    wp_reset_postdata();
+  } else {
+    echo '<p>' . esc_html__('No products found.', 'viu-fcsd') . '</p>';
+  }
+  echo '</div>';
   return ob_get_clean();
 });
 
