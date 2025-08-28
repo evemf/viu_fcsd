@@ -3,18 +3,23 @@
  * Site branding.
  */
 
-$current = function_exists( 'viu_fcsd_current_lang' ) ? viu_fcsd_current_lang() : 'ca';
-$home    = home_url( '/' . $current . '/' );
+$current    = function_exists( 'viu_fcsd_current_lang' ) ? viu_fcsd_current_lang() : 'ca';
+$home       = home_url( '/' . $current . '/' );
+$site_name  = get_bloginfo( 'name' );
+$logo_path  = get_template_directory() . '/assets/img/logo-placeholder.svg';
+$logo_uri   = get_template_directory_uri() . '/assets/img/logo-placeholder.svg';
+$has_logo   = has_custom_logo();
 ?>
-<div class="site-branding">
-<?php if ( has_custom_logo() ) :
-    $logo_id = get_theme_mod( 'custom_logo' );
-    $logo    = wp_get_attachment_image( $logo_id, 'full', false, [ 'class' => 'custom-logo', 'alt' => get_bloginfo( 'name' ) ] );
-    ?>
-    <a href="<?php echo esc_url( $home ); ?>" class="custom-logo-link"><?php echo $logo; ?></a>
-<?php else : ?>
-    <a class="site-logo-link" href="<?php echo esc_url( $home ); ?>">
-        <img class="site-logo" src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/logo-placeholder.svg' ); ?>" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+<div class="c-branding">
+    <a href="<?php echo esc_url( $home ); ?>" class="c-branding__link" rel="home">
+        <?php if ( $has_logo ) :
+            $logo_id = get_theme_mod( 'custom_logo' );
+            echo wp_get_attachment_image( $logo_id, 'full', false, [ 'class' => 'c-branding__logo', 'alt' => $site_name ] );
+        elseif ( file_exists( $logo_path ) ) : ?>
+            <img class="c-branding__logo" src="<?php echo esc_url( $logo_uri ); ?>" alt="<?php echo esc_attr( $site_name ); ?>" />
+        <?php else : ?>
+            <span class="c-branding__logo-text"><?php echo esc_html( $site_name ); ?></span>
+        <?php endif; ?>
+        <span class="c-branding__name"><?php echo esc_html( $site_name ); ?></span>
     </a>
-<?php endif; ?>
 </div>

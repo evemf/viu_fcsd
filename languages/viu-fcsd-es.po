@@ -1,0 +1,88 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: viu_fcsd 0.0.1\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: inc/setup.php:17
+msgid "Primary Menu"
+msgstr "Menú principal"
+
+#: inc/setup.php:18 footer.php:3
+msgid "Footer Menu"
+msgstr "Menú del pie"
+
+#: templates/partials/language-switcher.php:7
+msgid "Català"
+msgstr "Catalán"
+
+#: templates/partials/language-switcher.php:8
+msgid "Español"
+msgstr "Español"
+
+#: templates/partials/language-switcher.php:9
+msgid "English"
+msgstr "Inglés"
+
+#: search.php:3
+msgid "Search Results for: %s"
+msgstr "Resultados de búsqueda para: %s"
+
+#: front-page.php:5
+msgid "Welcome to FCSD"
+msgstr "Bienvenido a FCSD"
+
+#: front-page.php:6
+msgid "Together we build the future."
+msgstr "Juntos construimos el futuro."
+
+#: front-page.php:7
+msgid "Donate"
+msgstr "Donar"
+
+#: archive.php:15 index.php:10
+msgid "No posts found"
+msgstr "No se encontraron entradas"
+
+#: header.php:12
+msgid "Skip to content"
+msgstr "Ir al contenido"
+
+#: header.php:19
+msgid "Menu"
+msgstr "Menú"
+
+#: header.php:23
+msgid "Primary menu"
+msgstr "Menú principal"
+
+#: header.php:36
+msgid "User access"
+msgstr "Acceso de usuario"
+
+#: templates/partials/language-switcher.php:15 templates/partials/language-switcher.php:27
+msgid "Language selector"
+msgstr "Selector de idioma"
+
+#: templates/partials/language-switcher.php:16
+msgid "Choose language"
+msgstr "Elegir idioma"
+
+#: index.php:3
+msgid "Latest Posts"
+msgstr "Entradas recientes"
+
+#: 404.php:3
+msgid "Page not found"
+msgstr "Página no encontrada"
+
+#: 404.php:4
+msgid "Sorry, the page you are looking for could not be found."
+msgstr "Lo sentimos, la página que busca no se pudo encontrar."
+
+#: search.php:10
+msgid "No results found."
+msgstr "No se encontraron resultados."

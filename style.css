@@ -3,3 +3,215 @@
  Text Domain: viu-fcsd
  Version: 0.0.1
 */
+
+/* =========================
+   Base existente del tema
+   ========================= */
+body {
+  margin: 0;
+  font-family: var(--wp--preset--font-family--system);
+  background: linear-gradient(135deg, var(--wp--preset--color--secondary), var(--wp--preset--color--white));
+  color: var(--wp--preset--color--primary);
+}
+
+a {
+  color: var(--wp--preset--color--primary);
+  text-decoration: none;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+a:hover, a:focus { color: var(--wp--preset--color--accent); }
+
+.button,
+.primary-nav a,
+.language-switcher select {
+  background-color: var(--wp--preset--color--primary);
+  color: var(--wp--preset--color--white);
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  display: inline-block;
+}
+.button:hover,
+.primary-nav a:hover,
+.language-switcher select:hover {
+  background-color: var(--wp--preset--color--accent);
+}
+
+header, footer {
+  background-color: var(--wp--preset--color--primary);
+  color: var(--wp--preset--color--white);
+}
+header a, footer a { color: var(--wp--preset--color--white); }
+header a:hover, footer a:hover { color: var(--wp--preset--color--accent); }
+
+@media (max-width: 600px) {
+  .primary-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+/* =========================
+   Variables Waso (adaptadas)
+   ========================= */
+:root{
+  --waso-white:#ffffff;
+  --waso-primary:#f9c10b;   /* amarillo Waso */
+  --waso-secondary:#dc3545; /* rojo Waso */
+  --waso-dark:#000000;
+  --waso-text:#717275;
+  --waso-font:'DM Sans',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;
+  --waso-menu-size:14px;
+  --waso-fw-medium:500;
+  --waso-fw-bold:700;
+}
+
+.small-title{ text-transform: uppercase; }
+
+/* =========================
+   TOP BAR (site-header)
+   ========================= */
+.site-header{
+  background:var(--waso-primary);
+  padding:10px 0;
+  font-family:var(--waso-font);
+}
+.site-header .container{ max-width:1200px; margin:0 auto; padding:0 16px; }
+.site-header .row{ display:flex; gap:16px; align-items:center; }
+.site-header .col{ display:flex; align-items:center; }
+.site-header .col--hours{ flex:0 0 auto; }
+.site-header .col--phone{ flex:0 0 auto; }
+.site-header .col--social{ flex:1 1 auto; justify-content:flex-end; }
+.site-header .text-white{ color:#fff; }
+.site-header .mb-0{ margin-bottom:0; }
+.site-header .ms-auto{ margin-left:auto; }
+.site-header-icon{ color:var(--waso-dark); margin-right:.5rem; }
+
+/* Social icons estilo Waso (sin Bootstrap Icons) */
+.social-icon{ margin:0; padding:0; display:flex; gap:4px; }
+.social-icon li{ list-style:none; }
+.social-icon-link{
+  background:var(--waso-white);
+  border-radius:20px;
+  font-size:16px;
+  color:var(--waso-dark);
+  display:inline-grid; place-items:center;
+  width:30px; height:30px; line-height:30px; text-align:center;
+}
+.social-icon-link:hover{ color:var(--waso-primary); }
+
+/* =========================
+   NAV + BRAND + CONTROLES
+   ========================= */
+.c-header{
+  position:sticky; top:0; z-index:1000;
+  background:#fff;
+  color:var(--waso-text);
+  box-shadow:0 6px 24px rgba(0,0,0,.08);
+  font-family:var(--waso-font);
+}
+.c-header__inner.container{ max-width:1200px; margin:0 auto; padding:12px 16px; display:flex; align-items:center; gap:16px; }
+
+/* Branding (tu partial) puede ser un h1/a/img: cuidamos el tamaño */
+.c-site-branding a,
+.c-site-branding .site-title a,
+.custom-logo-link{
+  font-weight:var(--waso-fw-bold);
+  font-size:32px;
+  color:var(--waso-primary);
+}
+.c-site-branding a .accent,
+.c-site-branding .site-title a .accent{ color:var(--waso-secondary); }
+
+/* Herramientas (buscador, dark, carrito, cuenta, idioma, hamburguesa) */
+.c-header__tools{
+  margin-left:auto; display:flex; align-items:center; gap:12px;
+}
+.c-header__tools a, .c-header__tools button{
+  background:transparent; border:0; padding:6px 8px; cursor:pointer; color:inherit;
+}
+.c-header__menu-toggle{ position:relative; width:32px; height:32px; }
+.c-header__menu-icon,
+.c-header__menu-icon::before,
+.c-header__menu-icon::after{
+  content:""; position:absolute; left:4px; right:4px; height:2px; background:#000;
+  transition:transform .25s ease, top .25s ease, opacity .2s ease;
+}
+.c-header__menu-icon{ top:15px; }
+.c-header__menu-icon::before{ top:8px; }
+.c-header__menu-icon::after{ top:22px; }
+.c-header__menu-toggle[aria-expanded="true"] .c-header__menu-icon{ background:transparent; }
+.c-header__menu-toggle[aria-expanded="true"] .c-header__menu-icon::before{ top:15px; transform:rotate(45deg); }
+.c-header__menu-toggle[aria-expanded="true"] .c-header__menu-icon::after{ top:15px; transform:rotate(-45deg); }
+
+/* Nav principal */
+.c-header__nav{
+  border-top:1px solid rgba(0,0,0,.06);
+  background:#fff;
+}
+.c-header__nav[hidden]{ display:none !important; }
+.c-menu{
+  display:flex; align-items:center; justify-content:flex-end;
+  gap:0; margin:0; padding:0; list-style:none;
+  max-width:1200px; margin-inline:auto; padding:0 16px;
+}
+.c-menu > li{ position:relative; }
+.c-menu a{
+  display:block; padding:15px 25px; text-transform:uppercase;
+  font-size:var(--waso-menu-size); font-weight:var(--waso-fw-medium);
+  color:var(--waso-text);
+}
+.c-menu a:hover, .c-menu .current-menu-item > a{ color:var(--waso-secondary); }
+
+/* Submenús */
+.c-menu .sub-menu{
+  position:absolute; left:0; top:100%;
+  background:#fff; box-shadow:0 10px 30px rgba(0,0,0,.08);
+  list-style:none; margin:0; padding:8px 0; min-width:220px; border:1px solid rgba(0,0,0,.06);
+  display:none;
+}
+.c-menu li:hover > .sub-menu, .c-menu li:focus-within > .sub-menu{ display:block; }
+.c-menu .sub-menu a{ padding:10px 16px; }
+
+/* Search desplegable */
+.c-header__search{
+  background:#fff; border-top:1px solid rgba(0,0,0,.06);
+  padding:16px; box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+.c-header__search[hidden]{ display:none !important; }
+
+/* Overlay para móvil */
+.c-header__overlay[hidden]{ display:none !important; }
+.c-header__overlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:999;
+}
+
+/* =========================
+   Responsive
+   ========================= */
+@media (max-width: 991px){
+  /* Nav en modo drawer */
+  .c-header__nav{
+    position:fixed; top:0; right:0; bottom:0; width:min(85vw, 340px);
+    transform:translateX(100%); transition:transform .25s ease;
+    padding-top:80px; z-index:1000; box-shadow: -12px 0 24px rgba(0,0,0,.12);
+  }
+  .c-header__nav.is-open{ transform:translateX(0); }
+  .c-menu{ flex-direction:column; align-items:stretch; }
+  .c-menu a{ padding:14px 20px; border-bottom:1px solid rgba(0,0,0,.06); }
+
+  /* Submenús en móvil: colapsables por foco/hover se vuelven "inline" */
+  .c-menu .sub-menu{
+    position:static; display:none; box-shadow:none; border:0; padding:0;
+  }
+  .c-menu li.is-open > .sub-menu{ display:block; }
+}
+
+/* =========================
+   Utilidades
+   ========================= */
+.container{ max-width:1200px; margin:0 auto; padding-inline:16px; }
+.row{ display:flex; flex-wrap:wrap; }
+.ms-auto{ margin-left:auto; }
+.text-white{ color:#fff; }
+.mb-0{ margin-bottom:0; }

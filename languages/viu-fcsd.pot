@@ -1,0 +1,100 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-27 14:13+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: footer.php:3 inc/setup.php:18
+msgid "Footer Menu"
+msgstr ""
+
+#: 404.php:3
+msgid "Page not found"
+msgstr ""
+
+#: 404.php:4
+msgid "Sorry, the page you are looking for could not be found."
+msgstr ""
+
+#: front-page.php:5
+msgid "Welcome to FCSD"
+msgstr ""
+
+#: front-page.php:6
+msgid "Together we build the future."
+msgstr ""
+
+#: front-page.php:7
+msgid "Donate"
+msgstr ""
+
+#: search.php:3
+#, php-format
+msgid "Search Results for: %s"
+msgstr ""
+
+#: search.php:10
+msgid "No results found."
+msgstr ""
+
+#: header.php:12
+msgid "Skip to content"
+msgstr ""
+
+#: header.php:19
+msgid "Menu"
+msgstr ""
+
+#: header.php:23
+msgid "Primary menu"
+msgstr ""
+
+#: header.php:36
+msgid "User access"
+msgstr ""
+
+#: inc/setup.php:17
+msgid "Primary Menu"
+msgstr ""
+
+#: index.php:3
+msgid "Latest Posts"
+msgstr ""
+
+#: index.php:10 archive.php:15
+msgid "No posts found"
+msgstr ""
+
+#: templates/partials/language-switcher.php:7
+msgid "Català"
+msgstr ""
+
+#: templates/partials/language-switcher.php:8
+msgid "Español"
+msgstr ""
+
+#: templates/partials/language-switcher.php:9
+msgid "English"
+msgstr ""
+
+#: templates/partials/language-switcher.php:15
+#: templates/partials/language-switcher.php:27
+msgid "Language selector"
+msgstr ""
+
+#: templates/partials/language-switcher.php:16
+msgid "Choose language"
+msgstr ""
