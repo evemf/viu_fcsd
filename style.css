@@ -37,11 +37,11 @@ a:hover, a:focus { color: var(--wp--preset--color--accent); }
 }
 
 header, footer {
-  background-color: var(--wp--preset--color--primary);
-  color: var(--wp--preset--color--white);
+  background: var(--color-surface);
+  color: var(--color-text);
 }
-header a, footer a { color: var(--wp--preset--color--white); }
-header a:hover, footer a:hover { color: var(--wp--preset--color--accent); }
+header a, footer a { color: inherit; }
+header a:hover, footer a:hover { color: var(--color-accent); }
 
 @media (max-width: 600px) {
   .primary-nav {

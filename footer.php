@@ -92,18 +92,6 @@
       </div>
     <?php endif; ?>
 
-    <!-- Tu menú de footer (se mantiene tal cual) -->
-    <nav class="footer-navigation" aria-label="<?php esc_attr_e( 'Footer Menu', 'viu-fcsd' ); ?>">
-      <?php
-        wp_nav_menu( [
-          'theme_location' => 'footer',
-          'menu_class'     => 'menu footer-menu',
-          'container'      => false,
-          'fallback_cb'    => false,
-        ] );
-      ?>
-    </nav>
-
     <!-- Selector de idiomas (se mantiene tal cual, en modo dropdown) -->
     <?php get_template_part( 'templates/partials/language-switcher', null, [ 'type' => 'dropdown' ] ); ?>
 

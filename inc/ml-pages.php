@@ -112,15 +112,18 @@ add_filter('the_content', function($content){
  * Helper: permalink por clave (legal/privacy/cookies/transparency)
  * --------------------------- */
 function viu_ml_link_by_key($key, $lang = ''){
-  $lang = $lang ?: viu_ml_current_lang();
+  $lang    = $lang ?: viu_ml_current_lang();
   $page_id = (int) get_option("viu_ml_page_$key"); // guardamos IDs al crear
-  if (!$page_id) return home_url('/');
+  if (!$page_id || !get_post($page_id)) return home_url('/');
   $slug = get_post_meta($page_id, "_viu_ml_slug_$lang", true);
   if (!$slug) { // fallback al default
-    $slug = get_post_meta($page_id, "_viu_ml_slug_".VIU_ML_DEFAULT_LANG, true);
+    $slug = get_post_meta($page_id, "_viu_ml_slug_" . VIU_ML_DEFAULT_LANG, true);
     $lang = VIU_ML_DEFAULT_LANG;
   }
-  return home_url('/'.$lang.'/'.$slug);
+  if (!$slug) {
+    return get_permalink($page_id);
+  }
+  return home_url('/' . $lang . '/' . $slug);
 }
 
 /* ---------------------------
@@ -210,12 +213,24 @@ add_action('save_post_page', function($post_id){
 });
 
 /* ---------------------------
- * CREATE PAGES ON THEME ACTIVATE
+ * CREATE PAGES ON THEME ACTIVATE (OR IF MISSING)
  * --------------------------- */
-add_action('after_switch_theme', function(){
-
-  $create_if_missing = function($key, $defaults){
+function viu_ml_setup_pages(){
+  $created = false;
+  $create_if_missing = function($key, $defaults) use (&$created){
     $existing = (int) get_option("viu_ml_page_$key");
+
+    if (!$existing || !get_post($existing)) {
+      $default_slug = $defaults['es']['slug'] ?? sanitize_title($defaults['es']['title'] ?? '');
+      if ($default_slug) {
+        $page = get_page_by_path($default_slug);
+        if ($page) {
+          $existing = $page->ID;
+          update_option("viu_ml_page_$key", $existing);
+        }
+      }
+    }
+
     if ($existing && get_post($existing)) return $existing;
 
     $post_id = wp_insert_post([
@@ -233,16 +248,102 @@ add_action('after_switch_theme', function(){
         update_post_meta($post_id, "_viu_ml_content_$lang", wp_kses_post($data['content'] ?? ''));
       }
       update_option("viu_ml_page_$key", $post_id);
+      $created = true;
     }
     return $post_id;
   };
 
   // ===== Contenidos por defecto =====
+
+  $transparency_content = <<<'HTML'
+<p>Les cookies són el mitjà tècnic per a la “traçabilitat” i seguiment de la navegació a les pàgines web. Són petits fitxers de text que s’escriuen en l’ordinador de l’Usuari. Aquest mètode té implicacions sobre la privacitat, de manera que la FUNDACIÓ informa que podrà utilitzar cookies amb la finalitat d’elaborar estadístiques d’utilització del lloc web així com per identificar el PC de l’usuari permetent reconèixer en les seves pròximes visites. En tot cas, l’usuari pot configurar el seu navegador per no permetre l’ús de cookies en les seves visites al web site.</p>
+<p>A la FUNDACIÓ utilitzem cookies amb l’objectiu de prestar un millor servei i proporcionar-te una millor experiència en la teva navegació. Volem informar-te de manera clara i precisa sobre les cookies que utilitzem, detallant a continuació, què és una galeta, per a què serveix, quina és la seva finalitat i com pots configurar-les o deshabilitar-les si així ho desitja.</p>
+<p>De conformitat amb la normativa espanyola que regula l’ús de cookies en relació a la prestació de serveis de comunicacions electròniques, recollida en el Reial decret llei 13/2012, del 30 de Març, l’informem sobre les cookies utilitzades en el lloc web de La FUNDACIÓ (en endavant, el “Lloc Web”) i el motiu del seu ús. Així mateix, LA FUNDACIÓ li informa que en navegar en el Lloc Web vostè està prestant el seu consentiment per a poder utilitzar-les.</p>
+<p>Les cookies utilitzades en el nostre lloc web, poden ser pròpies i de tercers, i ens permeten emmagatzemar i accedir a informació relativa a l’idioma, el tipus de navegador utilitzat, i altres característiques generals predefinides per l’usuari, així com seguir i analitzar l’activitat que du a terme, amb l’objecte d’introduir millores i prestar els nostres serveis d’una manera més eficient i personalitzada.</p>
+<p>La utilització de les cookies ofereix nombrosos avantatges en la prestació de serveis de la societat de la informació, ja que, entre altres: (i) facilita a l’usuari la navegació en el Lloc Web i l’accés als diferents serveis que ofereix; (Ii) evita a l’usuari configurar les característiques generals predefinides cada vegada que accedeix al Lloc Web; (Iii) afavoreix la millora del funcionament i dels serveis prestats a través del lloc web després del corresponent anàlisi de la informació obtinguda per mitjà de les cookies instal·lades.</p>
+<p>No obstant això, pot configurar el seu navegador, acceptant o rebutjant totes les galetes, o bé sel.leccionant aquelles, instal.lació de les quals pugui admetre o no vulgui admetre, seguint un dels següents procediments, i depenent del navegador utilitzat:</p>
+<p>Google Chrome (al Menú Eines): Configuració&gt; Mostra opcions avançades&gt; Privadesa (Configuració de contingut)&gt; Galetes Més informació: http://support.google.com/chrome/bin/answer.py?hl=es&amp;answer=95647<br/>
+Microsoft Internet Explorer (al Menú Eines): Opcions d’Internet&gt; Privadesa&gt; Avançada<br/>
+Més informació:<br/>
+http://windows.microsoft.com/es-es/windows7/how-to-manage-cookies-in-internet-explorer-9<br/>
+Firefox: Opcions&gt; Privadesa&gt; Galetes<br/>
+Més informació: http://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-que-los-sitios-we<br/>
+Safari, iPad i iPhone: Preferències&gt; Privadesa<br/>
+Més informació: http://support.apple.com/kb/ph5042</p>
+<p>Disponibilitat de la Pàgina<br/>
+La FUNDACIÓ no garanteix la inexistència d’interrupcions o errors en l’accés a la Pàgina i als seus Continguts, encara que aquests es trobin actualitzats, encara que desplegarà els seus millors esforços per a, si s´escau, evitar-los, resoldre’ls o actualitzar-los. Per tant, LA FUNDACIÓ no es responsabilitza dels danys o perjudicis de qualsevol tipus produïts en l’Usuari final que portin causa d’errors o desconnexions de les xarxes de telecomunicacions que produeixin la suspensió, cancel·lació o interrupció del servei del Portal durant la seva prestació o amb caràcter previ.</p>
+<p>La FUNDACIÓ exclou, amb les excepcions previstes en la legislació vigent, qualsevol responsabilitat pels danys i perjudicis de tota naturalesa que puguin deure´s a la falta de disponibilitat, continuïtat o qualitat del funcionament de la Pàgina i dels Continguts, així com al no compliment de l´expectativa d’utilitat que els usuaris haguessin pogut atribuir a la Pàgina i als Continguts.</p>
+<p>La funció dels Hiperenllaços que apareixen en aquesta web és exclusivament la d’informar a l’usuari sobre l’existència d’altres web que contenen informació sobre la matèria. Aquests Hiperenllaços no constitueixen suggeriment ni recomanació.</p>
+<p>La FUNDACIÓ no es fa responsable dels continguts d’aquestes pàgines enllaçades, del funcionament o utilitat dels Hiperenllaços ni del resultat d’aquests enllaços, ni garanteix l’absència de virus o altres elements en els mateixos que puguin produir alteracions en el sistema informàtic (maquinari i programari), els documents o els fitxers de l’usuari, excloent qualsevol responsabilitat pels danys de qualsevol classe causats a l’usuari per aquest motiu.</p>
+<p>L’accés a la Pàgina no implica l’obligació per part de LA FUNDACIÓ de controlar l’absència de virus, cucs o qualsevol altre element informàtic nociu. Correspon a l’Usuari, en tot cas, la disponibilitat d’eines adequades per a la detecció i desinfecció de programes informàtics nocius, per tant, LA FUNDACIÓ no es fa responsable dels possibles errors de seguretat que es puguin produir durant la prestació del servei de la pàgina, ni dels possibles danys que puguin causar al sistema informàtic de l’usuari o de tercers (hardware i software), així com als seus fitxers o documents emmagatzemats en el mateix sistema informàtic, com a conseqüència de la presència de virus a l’ordinador de l’usuari amb el que ha establert la connexió als serveis i continguts del web, d’un mal funcionament del navegador o de l’ús de versions no actualitzades del mateix.</p>
+<p>Qualitat de la Pàgina<br/>
+Atès l’entorn dinàmic i canviant tant de la informació com dels serveis que es posen a disposició de l´usuari per mitjà de la Pàgina, LA FUNDACIÓ realitza el seu millor esforç, però no garanteix la completa veracitat, exactitud, fiabilitat, utilitat i/o actualitat dels continguts.</p>
+<p>La informació continguda en les pàgines que componen aquest Portal només té caràcter informatiu, consultiu, divulgatiu i publicitari. En cap cas ofereixen ni tenen caràcter de compromís vinculant o contractual.</p>
+<p>Limitació de responsabilitat<br/>
+L’FUNDACIÓ exclou tota responsabilitat per les decisions que l’Usuari final pugui prendre tot basant-se en aquesta informació, així com pels possibles errors tipogràfics que puguin contenir els documents i gràfics de la Pàgina. La informació està sotmesa a possibles canvis diaris sense previ avís del seu contingut per ampliació, millora, correcció o actualització dels continguts.</p>
+<p>Notificacions<br/>
+Totes les notificacions i comunicacions que realitzi La Fundació a través de qualsevol mitjà es consideraran eficaces a tots els efectes.</p>
+<p>Disponibilitat de los Continguts<br/>
+La prestació del servei de la Pàgina i dels Continguts té, en principi, durada indefinida. La FUNDACIÓ, no obstant això, queda autoritzada per donar per acabada o suspendre la prestació del servei de la pàgina i/o de qualsevol dels Continguts en qualsevol moment. Quan això sigui raonablement possible, LA FUNDACIÓ advertirà prèviament la fi o suspensió de la Pàgina.</p>
+<p>Protecció de Dades de Caràcter Personal<br/>
+La FUNDACIÓ és conscient de la importància de la privacitat de les dades de caràcter personal i per això, ha implementat una política de tractament de dades orientada a proveir la màxima seguretat en l’ús i recollida de les mateixes, garantint el compliment de la normativa vigent en la matèria i configurant aquesta política com un dels pilars bàsics en les línies d’actuació de l’entitat.</p>
+<p>Durant la navegació a través del web http://www.fcsd.org/es és possible que es sol·licitin dades de caràcter personal a través de diferents formularis disposats a l´efecte. Aquestes dades formaran part dels pertinents fitxers en funció de la finalitat determinada i concreta que motiva la recaptació de les mateixes.</p>
+<p>D’aquesta manera, la informació particular de cada tractament de dades s’aportarà al costat de cada formulari web, sent comuna a tots ells el responsable del tractament: LA FUNDACIÓ domiciliada a C / Comte Borrell, 201-203, entresòl, 08029, Barcelona, ​​així com el lloc i forma d’exercici dels drets d’accés, rectificació, supressió, portabilitat de les seves dades, així com de limitació o oposició al seu tractament, s’ha de formalitzar mitjançant una comunicació escrita a l’adreça indicada anteriorment incloent còpia del DNI o document identificatiu equivalent.</p>
+<p>En el cas que aporti les seves dades a través d’un missatge de correu electrònic, el mateix missatge formarà part d’un fitxer la finalitat del qual serà la gestió de la sol·licitud o comentari que ens realitza, essent aplicables la resta d’extrems indicats en el paràgraf anterior.</p>
+<p>Així mateix, les condicions generals de contractació dels serveis de LA FUNDACIÓ contenen les característiques i naturalesa del tractament de les dades que seran gestionades per la mateixa Fundació en el cas que es contracti qualsevol dels serveis.</p>
+<p>D’altra banda, la FUNDACIÓ ha implantat les mesures tècniques i organitzatives necessàries per a evitar la pèrdua, mal ús, alteració, accés no autoritzat i robatori de les Dades Personals que els interessats poguessin facilitar com a conseqüència de l’accés a les diferents seccions del lloc web http://www.fcsd.org/es aplicant les mesures de seguretat previstes en el Reglament (UE) 2016/679 del Parlament Europeu i del Consell, del 27 d’abril de 2016, relatiu a la protecció de les persones físiques pel que fa al tractament de dades personals i a la lliure circulació d’aquestes dades (Reglament General de Protecció de dades – RGPD).</p>
+<p>Jurisdicció<br/>
+Per a les qüestions vinculades a la interpretació, aplicació i compliment d’aquest Avís Legal, així com de les reclamacions que puguin derivar-se del seu ús, totes les parts que intervenen es sotmeten als Jutges i Tribunals de Barcelona, ​​renunciant de forma expressa a qualsevol altre fur que pogués correspondre’ls.</p>
+<p>Legislació aplicable<br/>
+L´Avís Legal es regeix per la llei Espanyola</p>
+<p>Copyright© LA FUNDACIÓ.<br/>
+Reservats tots els drets d’autor per les lleis i tractats internacionals de propietat intel·lectual. Queda expressament prohibida la seva còpia, reproducció o difusió, total o parcial, a través de qualsevol mitjà.</p>
+HTML;
+
   $pages = [
     'legal' => [
-      'es'=>['title'=>'Aviso legal','slug'=>'aviso-legal','content'=>'<h2>Aviso legal</h2><p>Contenido legal en español. Personaliza y traduce desde el metabox.</p>'],
-      'ca'=>['title'=>'Avís legal','slug'=>'avis-legal','content'=>'<h2>Avís legal</h2><p>Contingut legal en català. Personalitza i tradueix des del metabox.</p>'],
-      'en'=>['title'=>'Legal Notice','slug'=>'legal-notice','content'=>'<h2>Legal Notice</h2><p>Starter content in English. Customize and translate in the metabox.</p>'],
+      'es'=>[
+        'title'=>'Aviso legal',
+        'slug'=>'aviso-legal',
+        'content'=> <<<'HTML'
+<h2>Información general</h2>
+<p>En cumplimiento del artículo 10 de la Ley 34/2002, de Servicios de la Sociedad de la Información y Comercio Electrónico, se informa que [org_name], con CIF [org_cif] y domicilio en <span class="addr">[org_address]</span>, es titular del sitio web <span class="url">[org_website]</span>.</p>
+<h2>Condiciones de uso</h2>
+<p>El acceso y uso del sitio atribuye la condición de persona usuaria e implica la aceptación de este aviso legal.</p>
+<h2>Propiedad intelectual</h2>
+<p>Los contenidos de este sitio, salvo indicación en contrario, son titularidad de [org_name]. Queda prohibida su reproducción sin autorización.</p>
+<h2>Responsabilidad</h2>
+<p>[org_name] no se responsabiliza del uso que se haga de la información publicada ni de los daños que puedan derivarse de dicho uso.</p>
+HTML
+      ],
+      'ca'=>[
+        'title'=>'Avís legal',
+        'slug'=>'avis-legal',
+        'content'=> <<<'HTML'
+<h2>Informació general</h2>
+<p>En compliment de l'article 10 de la Llei 34/2002, de Serveis de la Societat de la Informació i Comerç Electrònic, s'informa que [org_name], amb CIF [org_cif] i domicili a <span class="addr">[org_address]</span>, és titular del lloc web <span class="url">[org_website]</span>.</p>
+<h2>Condicions d'ús</h2>
+<p>L'accés i ús del lloc atribueix la condició de persona usuària i implica l'acceptació d'aquest avís legal.</p>
+<h2>Propietat intel·lectual</h2>
+<p>Els continguts d'aquest lloc, llevat indicació en contra, són titularitat de [org_name]. Es prohibeix la seva reproducció sense autorització.</p>
+<h2>Responsabilitat</h2>
+<p>[org_name] no es fa responsable de l'ús que es faci de la informació publicada ni dels danys que en puguin derivar.</p>
+HTML
+      ],
+      'en'=>[
+        'title'=>'Legal Notice',
+        'slug'=>'legal-notice',
+        'content'=> <<<'HTML'
+<h2>General information</h2>
+<p>In accordance with article 10 of Law 34/2002 on Information Society Services, [org_name], tax ID [org_cif] and registered address at <span class="addr">[org_address]</span>, is the owner of the website <span class="url">[org_website]</span>.</p>
+<h2>Terms of use</h2>
+<p>Access to and use of this site attributes the status of user and implies acceptance of this legal notice.</p>
+<h2>Intellectual property</h2>
+<p>Unless otherwise indicated, the contents of this site belong to [org_name]. Reproduction without authorization is prohibited.</p>
+<h2>Liability</h2>
+<p>[org_name] is not responsible for the use made of the information on this site nor for any damages arising from such use.</p>
+HTML
+      ],
     ],
 
     'privacy' => [
@@ -250,127 +351,125 @@ add_action('after_switch_theme', function(){
         'title'=>'Política de privacitat',
         'slug'=>'politica-de-privacitat',
         'content'=> <<<'HTML'
-<h2>1. RESPONSABLE DE LES DADES</h2>
-<p>[org_name] (d’ara endavant, “LA FUNDACIÓ”) amb CIF [org_cif] i domicili a <span class="addr">[org_address]</span>, és el responsable d’aquest lloc web (<span class="url">[org_website]</span>) i de totes les dades recaptades en ell.</p>
-<p>LA FUNDACIÓ és conscient de la importància de la privacitat de les dades de caràcter personal i per això, ha implementat una política de tractament de dades orientada a proveir la màxima seguretat en l’ús i recollida d’aquests, garantint el compliment de la normativa vigent en la matèria i configurant aquesta política com un dels pilars bàsics en les línies d’actuació de l’organització. En aquest sentit, volem garantir-li que estem compromesos amb la protecció de les seves dades pel que hem adoptat les mesures necessàries per a evitar possibles danys o pèrdues de les dades.</p>
-<p>Aquesta Política de Privacitat té per objecte facilitar-li la informació necessària en relació amb el tractament que realitzem de les dades recaptades així com els drets que li assisteixen, en virtut del compliment per part de LA FUNDACIÓ del Reglament (UE) 2016/679 (RGPD) i altra normativa relativa a la protecció de dades personals.</p>
-<p>LA FUNDACIÓ ha designat un Delegat de Protecció de Dades (DPD) i pot contactar-hi a través del correu electrònic <a href="mailto:[dpo_email]">[dpo_email]</a>.</p>
-<p>Entenem que si visita el nostre lloc web, accepta la present política de privacitat. En cas contrari, li preguem que no utilitzi el nostre lloc web.</p>
-
-<h2>2. QUINES DADES RECOLLIM I PER A QUÈ?</h2>
-<p>LA FUNDACIÓ recull la IP a través de cookies (veure la Política de cookies) per a realitzar anàlisis estadístiques i monitoratge del funcionament del lloc web. Aquesta informació es tracta de manera que no permet identificar la persona i la finalitat és monitorar el correcte funcionament de la pàgina i saber, per exemple, quins productes, serveis, apartats o notícies han agradat més.</p>
-<p>Durant la navegació és possible que se sol·licitin dades personals a través de diferents formularis. Aquestes dades formaran part dels pertinents tractaments en funció de la finalitat determinada.</p>
-<p>La informació particular de cada tractament s’aportarà al costat de cada formulari web, sent comú a tots ells el responsable del tractament indicat anteriorment i el lloc i forma d’exercici dels drets d’accés, rectificació, supressió, portabilitat de dades, així com de limitació o oposició al tractament, mitjançant comunicació escrita a l’adreça indicada o a <a href="mailto:[dpo_email]">[dpo_email]</a>, incloent còpia del DNI o document identificatiu equivalent.</p>
-<p>Si ens aporta dades via correu electrònic, aquestes s’utilitzaran per gestionar la seva sol·licitud o comentari, essent aplicable la resta d’extrems indicats.</p>
-<p>Les condicions generals de contractació dels serveis de LA FUNDACIÓ contenen les característiques i naturalesa del tractament de dades quan contracti qualsevol servei.</p>
-
-<h3>Formulari de Contacte</h3>
-<p><strong>Dades:</strong> Identificatives i de contacte.</p>
-<p><strong>Finalitats:</strong> Tramitar la consulta/sol·licitud; enviament d’informació comercial sobre activitats relacionades amb la Fundació i/o felicitacions.</p>
-<p><strong>Legitimació:</strong> Interès legítim (gestió de consulta) i consentiment/interès legítim (publicitat; sempre amb opció de retirar-lo).</p>
-
-<h3>Formulari de CV</h3>
-<p><strong>Dades:</strong> Identificatives i de contacte, dades personals, socials, acadèmiques, professionals i laborals.</p>
-<p><strong>Finalitats:</strong> Gestió de la seva participació en processos de selecció.</p>
-<p><strong>Legitimació:</strong> Consentiment.</p>
-
-<h3>Jornades i Esdeveniments</h3>
-<p><strong>Dades:</strong> Identificatives i de contacte.</p>
-<p><strong>Finalitats:</strong> Gestió de la inscripció; enviament d’informació comercial relacionada; captació i publicació d’imatges i/o veu amb consentiment.</p>
-<p><strong>Legitimació:</strong> Execució de contracte (condicions d’inscripció) i consentiment/interès legítim en supòsits concrets.</p>
-
-<h3>Newsletter</h3>
-<p><strong>Finalitats:</strong> Gestionar la subscripció voluntària i l’enviament d’informació relacionada.</p>
-<p><strong>Legitimació:</strong> Execució del servei i consentiment/interès legítim quan correspongui.</p>
-
-<h3>Formació</h3>
-<p><strong>Finalitats:</strong> Gestió d’inscripcions; enviament d’informació relacionada.</p>
-<p><strong>Legitimació:</strong> Execució de contracte i consentiment/interès legítim quan correspongui.</p>
-
-<h3>Donatius</h3>
-<p><strong>Finalitats:</strong> Gestió de donatius; enviament d’informació relacionada.</p>
-<p><strong>Legitimació:</strong> Execució de contracte i consentiment/interès legítim quan correspongui.</p>
-
-<h3>Soci</h3>
-<p><strong>Finalitats:</strong> Gestió de socis; enviament d’informació relacionada.</p>
-<p><strong>Legitimació:</strong> Execució de contracte i consentiment/interès legítim quan correspongui.</p>
-
-<h3>Voluntari</h3>
-<p><strong>Finalitats:</strong> Gestió de voluntaris; enviament d’informació relacionada.</p>
-<p><strong>Legitimació:</strong> Execució de contracte i consentiment/interès legítim quan correspongui.</p>
-
-<h3>Compra online</h3>
-<p><strong>Finalitats:</strong> Gestionar la seva sol·licitud de compra; enviament d’informació relacionada.</p>
-<p><strong>Legitimació:</strong> Execució de contracte i consentiment/interès legítim quan correspongui.</p>
-
-<h3>Petició de cita mèdica</h3>
-<p><strong>Finalitats:</strong> Gestionar la seva sol·licitud de cita; enviament d’informació relacionada.</p>
-<p><strong>Legitimació:</strong> Gestió de la sol·licitud i consentiment/interès legítim quan correspongui.</p>
-
-<h3>Subscripció ABC21</h3>
-<p><strong>Finalitats:</strong> Gestionar la seva inscripció; enviament d’informació relacionada.</p>
-<p><strong>Legitimació:</strong> Execució de contracte (bases legals) i consentiment/interès legítim quan correspongui.</p>
-
-<h2>3. COMUNIQUEM LES DADES A ALGUN TERCER?</h2>
-<p>Només comunicarem dades quan existeixi base legal (obligació legal, execució de contracte, consentiment). Comptem amb encarregats del tractament que accedeixen a dades únicament per prestar el servei contractat (per exemple, serveis informàtics o de màrqueting), amb el corresponent acord de tractament.</p>
-
-<h2>4. QUANT TEMPS CONSERVAREM LES SEVES DADES?</h2>
-<p>Conservarem les dades el temps necessari per a la finalitat recollida. Per a enviaments comercials, mentre no s’hi oposi o retiri el consentiment. Després, les dades quedaran bloquejades a disposició d’autoritats durant els terminis legals de prescripció.</p>
-
-<h2>5. MESURES DE SEGURETAT</h2>
-<p>Hem implantat mesures tècniques i organitzatives adequades d’acord amb el RGPD i segons anàlisi de riscos per evitar pèrdua, mal ús, alteració o accés no autoritzat.</p>
-
-<h2>6. TRANSFERÈNCIES INTERNACIONALS</h2>
-<p>No es realitzen transferències internacionals fora de la UE o sense un nivell adequat declarat per la Comissió Europea.</p>
-
-<h2>7. ENLLAÇOS A ALTRES PÀGINES</h2>
-<p>Aquesta política s’aplica al nostre lloc web. Si accedeix a webs de tercers mitjançant enllaços, consulti les seves polítiques de privacitat.</p>
-
-<h2>8. DRETS</h2>
-<p>Pot exercir els drets d’accés, rectificació, oposició, supressió, limitació, portabilitat i a no ser objecte de decisions automatitzades (inclosa la perfilació), així com retirar el consentiment, mitjançant escrit a l’adreça del responsable o a <a href="mailto:[dpo_email]">[dpo_email]</a>. També pot presentar reclamació davant l’Agència Espanyola de Protecció de Dades (www.agpd.es).</p>
-
-<h2>9. MENORS</h2>
-<p>Els nostres llocs estan dirigits a majors de 18 anys. En emplenar formularis, garanteix ser major d’edat. Podem sol·licitar prova d’edat. Recomanem als tutors supervisar l’activitat en línia dels menors.</p>
-
-<h2>10. CONTACTE</h2>
-<p>Per a qüestions sobre protecció de dades, escrigui a <a href="mailto:[dpo_email]">[dpo_email]</a>.</p>
-
-<h2>11. ACTUALITZACIONS</h2>
-<p>Qualsevol canvi en aquesta política es comunicarà i serà vàlid des del moment de la seva publicació.</p>
-
-<p><em>Política de Privacitat actualitzada a data [policy_date].</em></p>
+<h2>Responsable de les dades</h2>
+<p>[org_name], amb CIF [org_cif] i domicili a <span class="addr">[org_address]</span>, és responsable del tractament de les dades recollides a través de <span class="url">[org_website]</span>. Contacte del DPD: <a href="mailto:[dpo_email]">[dpo_email]</a>.</p>
+<h2>Finalitat i legitimació</h2>
+<p>Les dades es tractaran per atendre les consultes, gestionar els serveis sol·licitats i enviar informació relacionada. La base jurídica és el consentiment i, si escau, l'execució d'un contracte.</p>
+<h2>Destinataris</h2>
+<p>No es cediran dades a tercers excepte obligació legal o encàrrec de tractament.</p>
+<h2>Drets</h2>
+<p>Pot exercir els drets d'accés, rectificació, supressió, oposició, limitació i portabilitat mitjançant un correu a <a href="mailto:[dpo_email]">[dpo_email]</a>.</p>
+<p><em>Política actualitzada a [policy_date].</em></p>
 HTML
       ],
       'es'=>[
         'title'=>'Política de privacidad',
         'slug'=>'politica-de-privacidad',
-        'content'=>'<h2>Política de privacidad</h2><p>Versión base generada por el tema. Edita/añade el contenido en español en esta misma página usando el metabox de idiomas. Los datos dinámicos: [org_name], [org_cif], [org_address], [org_website], [dpo_email], [policy_date].</p>'
+        'content'=> <<<'HTML'
+<h2>Responsable de los datos</h2>
+<p>[org_name], con CIF [org_cif] y domicilio en <span class="addr">[org_address]</span>, es responsable del tratamiento de los datos recogidos a través de <span class="url">[org_website]</span>. Contacto del DPO: <a href="mailto:[dpo_email]">[dpo_email]</a>.</p>
+<h2>Finalidad y legitimación</h2>
+<p>Los datos se tratarán para atender sus consultas, gestionar los servicios solicitados y enviar información relacionada. La base jurídica es su consentimiento y, en su caso, la ejecución de un contrato.</p>
+<h2>Destinatarios</h2>
+<p>No se cederán datos a terceros salvo obligación legal o encargo de tratamiento.</p>
+<h2>Derechos</h2>
+<p>Puede ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad enviando un correo a <a href="mailto:[dpo_email]">[dpo_email]</a>.</p>
+<p><em>Política actualizada a [policy_date].</em></p>
+HTML
       ],
       'en'=>[
         'title'=>'Privacy Policy',
         'slug'=>'privacy-policy',
-        'content'=>'<h2>Privacy Policy</h2><p>Base version generated by the theme. Edit/add English content on this same page using the language metabox. Dynamic data via shortcodes: [org_name], [org_cif], [org_address], [org_website], [dpo_email], [policy_date].</p>'
+        'content'=> <<<'HTML'
+<h2>Data controller</h2>
+<p>[org_name], tax ID [org_cif] and address at <span class="addr">[org_address]</span>, is responsible for processing the data collected through <span class="url">[org_website]</span>. DPO contact: <a href="mailto:[dpo_email]">[dpo_email]</a>.</p>
+<h2>Purpose and legal basis</h2>
+<p>Data are processed to handle enquiries, manage requested services and send related information. The legal basis is consent and, where applicable, performance of a contract.</p>
+<h2>Recipients</h2>
+<p>Data will not be disclosed to third parties except under legal obligation or data processor agreements.</p>
+<h2>Rights</h2>
+<p>You may exercise your rights of access, rectification, erasure, objection, restriction and portability by emailing <a href="mailto:[dpo_email]">[dpo_email]</a>.</p>
+<p><em>Policy updated on [policy_date].</em></p>
+HTML
       ],
     ],
 
     'cookies' => [
-      'es'=>['title'=>'Política de cookies','slug'=>'politica-de-cookies','content'=>'<h2>Cookies</h2><p>Contenido base. Personaliza y traduce desde el metabox.</p>'],
-      'ca'=>['title'=>'Política de galetes','slug'=>'politica-de-galetes','content'=>'<h2>Galetes</h2><p>Contingut base. Personalitza i tradueix des del metabox.</p>'],
-      'en'=>['title'=>'Cookies Policy','slug'=>'cookies-policy','content'=>'<h2>Cookies</h2><p>Starter content. Customize and translate in the metabox.</p>'],
+      'es'=>[
+        'title'=>'Política de cookies',
+        'slug'=>'politica-de-cookies',
+        'content'=> <<<'HTML'
+<h2>¿Qué son las cookies?</h2>
+<p>Las cookies son pequeños archivos que se almacenan en su dispositivo cuando visita un sitio web.</p>
+<h2>Cookies utilizadas</h2>
+<p>Este sitio utiliza cookies propias y de terceros con fines técnicos, de personalización y análisis anónimo.</p>
+<h2>Cómo gestionar las cookies</h2>
+<p>Puede configurar su navegador para permitir, bloquear o eliminar las cookies instaladas. Al continuar navegando acepta su uso.</p>
+HTML
+      ],
+      'ca'=>[
+        'title'=>'Política de galetes',
+        'slug'=>'politica-de-galetes',
+        'content'=> <<<'HTML'
+<h2>Què són les galetes?</h2>
+<p>Les galetes són fitxers petits que s'emmagatzemen al dispositiu quan visita un lloc web.</p>
+<h2>Galetes utilitzades</h2>
+<p>Aquest lloc utilitza galetes pròpies i de tercers amb finalitats tècniques, de personalització i d'anàlisi anònima.</p>
+<h2>Com gestionar les galetes</h2>
+<p>Podeu configurar el vostre navegador per permetre, bloquejar o eliminar les galetes instal·lades. Si continueu navegant, accepteu el seu ús.</p>
+HTML
+      ],
+      'en'=>[
+        'title'=>'Cookies Policy',
+        'slug'=>'cookies-policy',
+        'content'=> <<<'HTML'
+<h2>What are cookies?</h2>
+<p>Cookies are small files stored on your device when visiting a website.</p>
+<h2>Cookies used</h2>
+<p>This site uses first-party and third-party cookies for technical purposes, personalisation and anonymous analytics.</p>
+<h2>Managing cookies</h2>
+<p>You can configure your browser to allow, block or delete cookies. Continuing to browse constitutes acceptance of their use.</p>
+HTML
+      ],
     ],
 
     'transparency' => [
-      'es'=>['title'=>'Transparencia','slug'=>'transparencia','content'=>'<h2>Transparencia</h2><p>Contenido base. Personaliza y traduce desde el metabox.</p>'],
-      'ca'=>['title'=>'Transparència','slug'=>'transparencia','content'=>'<h2>Transparència</h2><p>Contingut base. Personalitza i tradueix des del metabox.</p>'],
-      'en'=>['title'=>'Transparency','slug'=>'transparency','content'=>'<h2>Transparency</h2><p>Starter content. Customize and translate in the metabox.</p>'],
+      'es'=>[
+        'title'=>'Transparencia',
+        'slug'=>'transparencia',
+        'content'=> <<<'HTML'
+<h2>Compromiso de transparencia</h2>
+<p>[org_name] pone a disposición de la ciudadanía información actualizada sobre su actividad, organización y recursos económicos.</p>
+<h2>Documentación</h2>
+<p>En esta página se publicarán las memorias, cuentas anuales, informes de auditoría y otros documentos de interés.</p>
+HTML
+      ],
+      'ca'=>[
+        'title'=>'Transparència',
+        'slug'=>'transparencia',
+        'content'=>$transparency_content,
+      ],
+      'en'=>[
+        'title'=>'Transparency',
+        'slug'=>'transparency',
+        'content'=> <<<'HTML'
+<h2>Commitment to transparency</h2>
+<p>[org_name] provides citizens with up-to-date information about its activity, organisation and financial resources.</p>
+<h2>Documentation</h2>
+<p>This page will publish annual reports, financial statements, audit reports and other relevant documents.</p>
+HTML
+      ],
     ],
   ];
 
   foreach($pages as $key=>$defs){ $create_if_missing($key, $defs); }
 
-  // Activar reglas /{lang}/{slug}
-  flush_rewrite_rules();
-});
+  if ($created) {
+    flush_rewrite_rules();
+  }
+}
+add_action('after_switch_theme', 'viu_ml_setup_pages');
+add_action('init', 'viu_ml_setup_pages');
 
 /* ---------------------------
  * FOOTER HELPERS
