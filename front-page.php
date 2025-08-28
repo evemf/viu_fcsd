@@ -17,7 +17,26 @@
       </article>
     <?php endwhile; endif; ?>
 
-    <!-- Aquí insertas la sección de Servicios -->
+    <?php
+      $featured = new WP_Query([
+        'post_type' => 'product',
+        'meta_key'  => '_viu_featured',
+        'meta_value'=> '1',
+        'posts_per_page' => 6,
+      ]);
+      if ( $featured->have_posts() ) :
+    ?>
+      <section class="front-featured-products">
+        <h2><?php esc_html_e('Productos destacados','viu-fcsd'); ?></h2>
+        <div class="catalog__grid">
+          <?php while( $featured->have_posts() ) : $featured->the_post();
+            get_template_part( 'templates/partials/product-card' );
+          endwhile; wp_reset_postdata(); ?>
+        </div>
+      </section>
+    <?php endif; ?>
+
+    <!-- Secciones existentes -->
     <?php echo do_shortcode('[digital_store title="Store" limit="12"]'); ?>
     <?php echo do_shortcode('[services_section title="How can we help you?" index="03/05" limit="6"]'); ?>
   </div>

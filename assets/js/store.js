@@ -82,4 +82,39 @@
     }
   });
 
+  // Gestión sencilla de carrito y compra rápida
+  function getCart(){
+    try{ return JSON.parse(localStorage.getItem('viu_cart')) || {}; }
+    catch(e){ return {}; }
+  }
+  function saveCart(c){ localStorage.setItem('viu_cart', JSON.stringify(c)); }
+  function addCart(id, qty, stock){
+    const cart = getCart();
+    const current = cart[id] || 0;
+    if (stock !== '' && !isNaN(stock) && current + qty > stock){
+      alert('No hay stock suficiente');
+      return false;
+    }
+    cart[id] = current + qty;
+    saveCart(cart);
+    return true;
+  }
+
+  document.addEventListener('click', (e)=>{
+    const add = e.target.closest('.js-add-cart');
+    if(add){
+      e.preventDefault();
+      const id = add.dataset.product;
+      const stock = parseInt(add.closest('.product-card').dataset.stock || '0',10);
+      if(addCart(id,1,stock)){ alert('Añadido al carrito'); }
+    }
+    const buy = e.target.closest('.js-buy-one');
+    if(buy){
+      e.preventDefault();
+      const id = buy.dataset.product;
+      const stock = parseInt(buy.closest('.product-card').dataset.stock || '0',10);
+      if(addCart(id,1,stock)){ window.location.href = '/checkout'; }
+    }
+  });
+
 })();

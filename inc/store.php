@@ -22,6 +22,7 @@ add_action('init', function () {
     'show_in_rest' => true,
     'menu_icon' => 'dashicons-products',
     'supports' => ['title','editor','excerpt','thumbnail','revisions'],
+    'taxonomies' => ['category'],
     'rewrite' => ['slug'=>'tienda','with_front'=>false],
   ]);
 
@@ -33,6 +34,9 @@ add_action('init', function () {
     'interval' => ['type'=>'string', 'default'=>'month'], // day|week|month|year
     'interval_count' => ['type'=>'integer', 'default'=>1],
     'sku' => ['type'=>'string'],
+    'sale_price' => ['type'=>'number'],
+    'stock' => ['type'=>'integer', 'default'=>0],
+    'featured' => ['type'=>'boolean', 'default'=>false],
   ];
   foreach ($product_meta as $key=>$schema) {
     register_post_meta('product', "_viu_{$key}", array_merge([
@@ -52,6 +56,28 @@ add_action('init', function () {
     'menu_icon' => 'dashicons-cart',
     'supports' => ['title','custom-fields'],
   ]);
+});
+
+/* --------------------------
+ *  A1) Metabox: destacado en portada
+ * --------------------------*/
+
+add_action('add_meta_boxes', function(){
+  add_meta_box('viu_product_front', __('Mostrar en la portada','viu-fcsd'), 'viu_product_front_cb', 'product', 'side');
+});
+
+function viu_product_front_cb($post){
+  $val = get_post_meta($post->ID, '_viu_featured', true);
+  wp_nonce_field('viu_product_front','viu_product_front_nonce');
+  ?>
+  <label><input type="checkbox" name="viu_featured" value="1" <?php checked($val,'1'); ?>> <?php esc_html_e('Mostrar en la portada','viu-fcsd'); ?></label>
+  <?php
+}
+
+add_action('save_post_product', function($post_id){
+  if(!isset($_POST['viu_product_front_nonce']) || !wp_verify_nonce($_POST['viu_product_front_nonce'],'viu_product_front')) return;
+  $val = isset($_POST['viu_featured']) ? '1' : '';
+  update_post_meta($post_id, '_viu_featured', $val);
 });
 
 /* --------------------------
