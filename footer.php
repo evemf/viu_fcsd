@@ -112,12 +112,7 @@
       <p class="copyright-text mb-0">
         &copy; <?php echo esc_html( date_i18n( 'Y' ) ); ?> <?php echo esc_html( get_bloginfo( 'name' ) ); ?>
       </p>
-      <ul class="c-footer__legal">
-        <li><a href="https://fcsd.org/es/aviso-legal/"><?php esc_html_e( 'Aviso legal', 'viu-fcsd' ); ?></a></li>
-        <li><a href="https://fcsd.org/es/politica-de-privacidad/"><?php esc_html_e( 'Política de privacidad', 'viu-fcsd' ); ?></a></li>
-        <li><a href="https://fcsd.org/es/politica-de-cookies/"><?php esc_html_e( 'Política de cookies', 'viu-fcsd' ); ?></a></li>
-        <li><a href="https://fcsd.org/es/transparencia-2/"><?php esc_html_e( 'Transparencia', 'viu-fcsd' ); ?></a></li>
-      </ul>
+      <?php if (function_exists('viu_ml_footer_links')) { viu_ml_footer_links(); } ?>
     </div>
 
   </div><!-- /.container -->

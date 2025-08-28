@@ -18,6 +18,7 @@
   <?php endwhile; endif; ?>
 
   <!-- Aquí insertas la sección de Servicios -->
+  <?php echo do_shortcode('[digital_store title="Store" limit="12"]'); ?>
   <?php echo do_shortcode('[services_section title="How can we help you?" index="03/05" limit="6"]'); ?>
 
 </main>

@@ -7,6 +7,10 @@ require_once get_template_directory() . '/inc/i18n.php';
 require_once get_template_directory() . '/inc/setup.php';
 require_once get_template_directory() . '/inc/services.php';
 require_once get_template_directory() . '/inc/customizer.php';
+require_once get_template_directory() . '/inc/store.php';
+require_once get_template_directory() . '/inc/ml-pages.php';
+require_once get_template_directory() . '/inc/legal-settings.php';
+
 
 
 // Al activar el tema, refrescar las rewrite rules (útil para i18n routing).
