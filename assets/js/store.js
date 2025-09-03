@@ -213,9 +213,7 @@
     });
   })();
 
-  // === Auth tabs (Login / Registro)
-  const $  = (s,c=document)=>c.querySelector(s);
-  const $$ = (s,c=document)=>Array.from(c.querySelectorAll(s));
+  // === Auth tabs ===
   const root = document;
   const tabs = $$('.auth-tab', root);
   if (!tabs.length) return;
@@ -237,9 +235,9 @@
     t.addEventListener('click', ()=> show(t.dataset.tab));
   });
 
-  // Si llega ?tab=register abre ese panel
+  // Muestra la pestaña inicial (?tab=... o primera)
   const params = new URLSearchParams(location.search);
-  const initial = params.get('tab') === 'register' ? 'register' : 'login';
+  const initial = params.get('tab') || tabs[0].dataset.tab;
   show(initial);
 
    document.addEventListener('click', async (e)=>{
