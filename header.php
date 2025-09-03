@@ -98,12 +98,22 @@
 
             $account_url   = $account_page ? get_permalink($account_page->ID) : home_url('/account');
             $dashboard_url = $dashboard_page ? get_permalink($dashboard_page->ID) : home_url('/account');
-
-            $account_href = is_user_logged_in() ? $dashboard_url : $account_url;
             ?>
-            <a class="c-header__account<?php echo is_user_logged_in() ? ' is-logged' : ''; ?>" href="<?php echo esc_url($account_href); ?>" aria-label="<?php esc_attr_e( 'Mi cuenta', 'viu-fcsd' ); ?>">
-            <i class="ri-user-3-line" aria-hidden="true"></i>
-            </a>
+            <?php if ( is_user_logged_in() ) : ?>
+                <a class="c-header__account is-logged" href="<?php echo esc_url( $dashboard_url ); ?>" aria-label="<?php esc_attr_e( 'Mi cuenta', 'viu-fcsd' ); ?>">
+                    <i class="ri-user-3-line" aria-hidden="true"></i>
+                </a>
+                <a class="c-header__logout" href="<?php echo esc_url( wp_logout_url( home_url('/account') ) ); ?>" aria-label="<?php esc_attr_e( 'Cerrar sesión', 'viu-fcsd' ); ?>">
+                    <i class="ri-logout-box-line" aria-hidden="true"></i>
+                </a>
+            <?php else : ?>
+                <a class="c-header__account" href="<?php echo esc_url( $account_url ); ?>" aria-label="<?php esc_attr_e( 'Iniciar sesión', 'viu-fcsd' ); ?>">
+                    <i class="ri-user-3-line" aria-hidden="true"></i>
+                </a>
+                <a class="c-header__register" href="<?php echo esc_url( add_query_arg( 'tab', 'register', $account_url ) ); ?>" aria-label="<?php esc_attr_e( 'Registrarse', 'viu-fcsd' ); ?>">
+                    <i class="ri-user-add-line" aria-hidden="true"></i>
+                </a>
+            <?php endif; ?>
 
             <!-- Language switcher -->
             <?php get_template_part( 'templates/partials/language-switcher', null, [ 'type' => 'list' ] ); ?>
