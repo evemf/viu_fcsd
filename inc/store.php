@@ -384,6 +384,13 @@ function viu_store_checkout(WP_REST_Request $r){
   update_post_meta($order_id,'_viu_status','pending');
   update_post_meta($order_id,'_viu_provider',$provider);
 
+  // ⬇️⬇️ **AQUÍ EL AJUSTE DEL PUNTO 3**: vincular el pedido al usuario logueado
+  $current_user_id = get_current_user_id();
+  if ( $current_user_id ) {
+    update_post_meta($order_id, '_viu_user_id', $current_user_id);
+  }
+  // ⬆️⬆️
+
   $return_url = home_url('/?checkout=success&order='.$order_id);
   $cancel_url = home_url('/?checkout=cancel&order='.$order_id);
 
@@ -417,7 +424,6 @@ function viu_store_checkout(WP_REST_Request $r){
       'customer_email' => $email,
     ];
     // encode line items
-    // line_items[0][price_data][currency]=... etc.
     $i=0;
     foreach ($line as $k=>$v){
       if ($k==='quantity'){ $payload["line_items[$i][quantity]"] = $v; continue; }
@@ -490,6 +496,7 @@ function viu_store_checkout(WP_REST_Request $r){
 
   return new WP_Error('provider','Proveedor no soportado', ['status'=>400]);
 }
+
 
 function viu_store_curl($url,$payload,$headers=[],$json=false){
   $ch = curl_init($url);

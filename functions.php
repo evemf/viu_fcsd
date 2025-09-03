@@ -10,6 +10,7 @@ require_once get_template_directory() . '/inc/customizer.php';
 require_once get_template_directory() . '/inc/store.php';
 require_once get_template_directory() . '/inc/ml-pages.php';
 require_once get_template_directory() . '/inc/legal-settings.php';
+require_once get_template_directory() . '/inc/account.php';
 
 
 

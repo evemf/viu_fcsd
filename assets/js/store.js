@@ -213,4 +213,66 @@
     });
   })();
 
+  // === Auth tabs (Login / Registro)
+  const $  = (s,c=document)=>c.querySelector(s);
+  const $$ = (s,c=document)=>Array.from(c.querySelectorAll(s));
+  const root = document;
+  const tabs = $$('.auth-tab', root);
+  if (!tabs.length) return;
+
+  const show = (name)=>{
+    tabs.forEach(t=>{
+      const active = t.dataset.tab === name;
+      t.classList.toggle('is-active', active);
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+      const panel = document.getElementById('panel-'+t.dataset.tab);
+      if (panel){
+        if (t.dataset.tab === name){ panel.removeAttribute('hidden'); }
+        else { panel.setAttribute('hidden',''); }
+      }
+    });
+  };
+
+  tabs.forEach(t=>{
+    t.addEventListener('click', ()=> show(t.dataset.tab));
+  });
+
+  // Si llega ?tab=register abre ese panel
+  const params = new URLSearchParams(location.search);
+  const initial = params.get('tab') === 'register' ? 'register' : 'login';
+  show(initial);
+
+   document.addEventListener('click', async (e)=>{
+    const btn = e.target.closest('.js-fav');
+    if (!btn) return;
+    e.preventDefault();
+    const pid = parseInt(btn.dataset.product, 10);
+    if (!pid) return;
+
+    // Si no está logueado, redirige a /account (puedes mostrar modal si quieres)
+    if (!document.body.classList.contains('logged-in')) {
+      window.location.href = '/account';
+      return;
+    }
+
+    try{
+      const res = await fetch((window.VIU_STORE?.ajaxUrl || '/wp-json/viu-fcsd/v1') + '/favorites/toggle', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        credentials:'include',
+        body: JSON.stringify({ product_id: pid })
+      });
+      const j = await res.json();
+      if (j && (j.status === 'added' || j.status === 'removed')){
+        const pressed = j.status === 'added';
+        btn.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+        btn.textContent = (pressed ? '❤️ ' : '🤍 ') + (btn.dataset.label || 'Favorito');
+      } else {
+        alert('No se pudo actualizar favoritos');
+      }
+    }catch(err){
+      console.error(err);
+      alert('Error al actualizar favoritos');
+    }
+  });
 })();

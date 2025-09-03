@@ -202,9 +202,11 @@ a{ text-decoration:none; color:inherit; }
 ========================= */
 .services.section-padding#section_store{ padding:60px 0; background:var(--color-surface); color:var(--color-text); }
 
+/* Grid de productos */
 .store-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
 @media (max-width:991px){ .store-grid{ grid-template-columns:1fr; } }
 
+/* Tarjeta legacy */
 .store-card{
   background:var(--color-surface);
   border:1px solid color-mix(in srgb, var(--color-text) 6%, transparent); border-radius:14px;
@@ -241,7 +243,16 @@ a{ text-decoration:none; color:inherit; }
   box-shadow: var(--shadow-sm);
   padding: 10px;
 }
-.carousel__image{ width:100%; height:auto; display:block; border-radius: 8px; }
+/* Ratio consistente 4:3 y sin distorsión en el carrusel */
+.carousel__image{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 8px;
+}
 .carousel__title{ margin: 8px 0 6px; font-size: 16px; }
 .carousel__price{ font-weight: 700; }
 
@@ -299,6 +310,42 @@ a{ text-decoration:none; color:inherit; }
   background: var(--color-primary);
   color: #fff;
   border-color: var(--color-primary);
+}
+
+/* ======= Product card unificada (sin distorsión) ======= */
+.product-card{
+  display:flex; flex-direction:column; height:100%;
+  background:var(--color-surface);
+  border:1px solid color-mix(in srgb, var(--color-text) 6%, transparent);
+  border-radius:14px; overflow:hidden; box-shadow:var(--shadow-sm);
+}
+
+/* Contenedor visual con ratio fijo */
+.product-card__media{
+  position:relative; display:block; width:100%;
+  aspect-ratio: 4 / 3;           /* homogéneo en todas las cards */
+  overflow:hidden; background:var(--color-surface-alt);
+  flex:0 0 auto;                 /* evita estirados por el layout */
+}
+
+/* La imagen rellena el contenedor sin deformar */
+.product-card__media img,
+.product-card__img,
+.store-card__image{              /* compat con clases previas */
+  position:absolute; inset:0;
+  width:100%; height:100% !important;
+  object-fit: cover; object-position:center;
+  display:block;
+}
+
+/* Cuerpo de la tarjeta */
+.product-card__body{ padding:16px; display:flex; flex-direction:column; gap:8px; flex:1 1 auto; }
+
+/* Parche defensivo */
+.product-card img{ max-width:100%; height:auto; }
+
+.product-card__actions .js-fav[aria-pressed="true"]{
+  border-color: var(--color-accent);
 }
 
 /* Modal */
@@ -377,3 +424,37 @@ a{ text-decoration:none; color:inherit; }
   background:rgba(255,255,255,.15);
   color: var(--wp--preset--color--white, #fff);
 }
+
+/* ===== Auth card ===== */
+.auth-card{
+  background: var(--color-surface);
+  border:1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.auth-card__header{ padding: 16px 18px; border-bottom:1px solid color-mix(in srgb, var(--color-text) 10%, transparent); }
+.auth-title{ margin:0; font-size: clamp(18px, 2.2vw, 24px); }
+.auth-card__content{ padding: 18px; }
+.auth-card__tabs{ display:flex; gap:6px; padding: 8px; border-bottom:1px solid color-mix(in srgb, var(--color-text) 10%, transparent); background: var(--color-surface); }
+.auth-tab{
+  appearance:none; background:transparent; border:1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+  border-radius:8px; padding:8px 12px; cursor:pointer;
+}
+.auth-tab.is-active{ background: var(--color-primary); color:#fff; border-color: var(--color-primary); }
+.auth-card__panels{ padding: 16px; }
+.auth-panel[hidden]{ display:none !important; }
+.auth-form label{ display:block; margin-bottom: 12px; }
+.auth-form input[type="text"],
+.auth-form input[type="email"],
+.auth-form input[type="password"]{
+  width:100%; padding: 10px; border:1px solid #ccc; border-radius:8px; background: var(--color-surface);
+}
+.auth-meta{ margin: 10px 0 0; font-size:.95rem; opacity:.8; }
+
+.notice{ margin:10px 8px 0; padding:10px 12px; border-radius:8px; }
+.notice--info{ background:#eef5ff; border:1px solid #cfe3ff; color:#073b6d; }
+.notice--success{ background:#e8faef; border:1px solid #b8efcc; color:#0f5132; }
+.notice--error{ background:#fdecea; border:1px solid #f5c2c0; color:#842029; }
+
+.account-list{ list-style:none; margin:0 0 12px; padding:0; display:grid; gap:6px; }
