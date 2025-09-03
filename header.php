@@ -101,7 +101,7 @@
 
             $account_href = is_user_logged_in() ? $dashboard_url : $account_url;
             ?>
-            <a class="c-header__account" href="<?php echo esc_url($account_href); ?>" aria-label="<?php esc_attr_e( 'Mi cuenta', 'viu-fcsd' ); ?>">
+            <a class="c-header__account<?php echo is_user_logged_in() ? ' is-logged' : ''; ?>" href="<?php echo esc_url($account_href); ?>" aria-label="<?php esc_attr_e( 'Mi cuenta', 'viu-fcsd' ); ?>">
             <i class="ri-user-3-line" aria-hidden="true"></i>
             </a>
 

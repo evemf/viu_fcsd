@@ -84,11 +84,11 @@ $err = isset($_GET['err']) ? sanitize_text_field(wp_unslash($_GET['err'])) : '';
             ?>
 
             <!-- Contenido de tabs -->
-            <div class="tab-content auth-content" data-auth-panels>
-              <div class="tab-pane fade <?php echo esc_attr($login_show); ?>" id="login-tab" role="tabpanel" aria-labelledby="login-tab-btn">
+              <div class="tab-content auth-content" data-auth-panels>
+              <div class="tab-pane fade <?php echo esc_attr($login_show); ?>" id="login-tab" role="tabpanel" aria-labelledby="login-tab-btn"<?php echo $initial_tab === 'register' ? ' hidden' : ''; ?>>
                 <?php get_template_part('templates/partials/login'); ?>
               </div>
-              <div class="tab-pane fade <?php echo esc_attr($register_show); ?>" id="register-tab" role="tabpanel" aria-labelledby="register-tab-btn">
+              <div class="tab-pane fade <?php echo esc_attr($register_show); ?>" id="register-tab" role="tabpanel" aria-labelledby="register-tab-btn"<?php echo $initial_tab === 'login' ? ' hidden' : ''; ?>>
                 <?php get_template_part('templates/partials/register'); ?>
               </div>
             </div>

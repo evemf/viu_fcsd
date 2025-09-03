@@ -90,6 +90,7 @@ a{ text-decoration:none; color:inherit; }
 .c-header__menu-toggle,.c-header__search-toggle,.c-header__dark-toggle,.c-header__cart,.c-header__account{
   background:none; border:0; color:inherit; padding:var(--space-1); cursor:pointer; line-height:1;
 }
+.c-header__account.is-logged{ color:var(--color-primary); }
 
 /* Burger icon */
 .c-header__menu-icon,
