@@ -7,6 +7,7 @@
       <a class="button" href="#donate"><?php echo esc_html__( 'Donate', 'viu-fcsd' ); ?></a>
     </div>
   </section>
+
   <div class="container">
     <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
       <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
@@ -18,16 +19,17 @@
     <?php endwhile; endif; ?>
 
     <?php
+      // SOLO destacados en portada
       $featured = new WP_Query([
-        'post_type' => 'product',
-        'meta_key'  => '_viu_featured',
-        'meta_value'=> '1',
+        'post_type'      => 'product',
+        'meta_key'       => '_viu_featured',
+        'meta_value'     => '1',
         'posts_per_page' => 6,
       ]);
       if ( $featured->have_posts() ) :
     ?>
-      <section class="front-featured-products">
-        <h2><?php esc_html_e('Productos destacados','viu-fcsd'); ?></h2>
+      <section class="front-featured-products" aria-labelledby="front-featured-title">
+        <h2 id="front-featured-title"><?php esc_html_e('Productos destacados','viu-fcsd'); ?></h2>
         <div class="catalog__grid">
           <?php while( $featured->have_posts() ) : $featured->the_post();
             get_template_part( 'templates/partials/product-card' );
@@ -36,10 +38,8 @@
       </section>
     <?php endif; ?>
 
-    <!-- Secciones existentes -->
-    <?php echo do_shortcode('[digital_store title="Store" limit="12"]'); ?>
+    <!-- Mantén servicios si procede (no muestra productos) -->
     <?php echo do_shortcode('[services_section title="How can we help you?" index="03/05" limit="6"]'); ?>
   </div>
-
 </main>
 <?php get_footer(); ?>
