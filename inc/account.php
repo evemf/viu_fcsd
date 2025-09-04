@@ -182,6 +182,8 @@ add_shortcode('viu_account_dashboard', function(){
   // Datos de perfil
   $first = get_user_meta($u->ID,'first_name',true);
   $last  = get_user_meta($u->ID,'last_name',true);
+  $avatar_id  = get_user_meta($u->ID,'profile_photo_id',true);
+  $avatar_url = $avatar_id ? wp_get_attachment_image_url($avatar_id, 'thumbnail') : '';
 
   // Pedidos del usuario (por user_id; fallback por email)
   $orders = new WP_Query([
@@ -216,9 +218,16 @@ add_shortcode('viu_account_dashboard', function(){
       <div class="auth-card__panels">
         <!-- Perfil -->
         <div class="auth-panel" id="panel-profile" role="tabpanel">
-          <form method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" class="auth-form">
+          <form method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" class="auth-form" enctype="multipart/form-data">
             <?php wp_nonce_field('viu_profile','_viu_nonce'); ?>
             <input type="hidden" name="action" value="viu_profile">
+            <label>
+              <span><?php esc_html_e('Foto de perfil','viu-fcsd'); ?></span>
+              <?php if ( $avatar_url ) : ?>
+                <img src="<?php echo esc_url( $avatar_url ); ?>" alt="" class="auth-avatar" />
+              <?php endif; ?>
+              <input type="file" name="profile_photo" accept="image/*" />
+            </label>
             <label>
               <span><?php esc_html_e('Nombre','viu-fcsd'); ?></span>
               <input type="text" name="first_name" value="<?php echo esc_attr($first); ?>" />
@@ -429,6 +438,17 @@ function viu_handle_profile(){
   }
   update_user_meta($u->ID,'first_name',$first);
   update_user_meta($u->ID,'last_name',$last);
+
+  if ( ! empty( $_FILES['profile_photo']['name'] ) ) {
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+    require_once ABSPATH . 'wp-admin/includes/image.php';
+    require_once ABSPATH . 'wp-admin/includes/media.php';
+    $avatar_id = media_handle_upload('profile_photo', 0);
+    if ( is_wp_error( $avatar_id ) ) {
+      wp_safe_redirect( add_query_arg('err', urlencode(__('Error al subir la imagen','viu-fcsd')), home_url('/account-dashboard')) ); exit;
+    }
+    update_user_meta( $u->ID, 'profile_photo_id', $avatar_id );
+  }
 
   // Cambio de contraseña opcional
   $p1 = (string)($_POST['pass1'] ?? '');
