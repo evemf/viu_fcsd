@@ -8,7 +8,7 @@
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
-<a class="c-skip-link" href="#content"><?php esc_html_e( 'Ir al contenido', 'viu-fcsd' ); ?></a>
+<a class="c-skip-link" href="#content"><?php esc_html_e( 'Anar al contingut', 'viu-fcsd' ); ?></a>
 
 <!-- TOP BAR (Waso-style) con datos FCSD -->
 <header class="site-header" role="banner">
@@ -19,8 +19,8 @@
             <div class="col col--hours">
                 <p class="text-white mb-0">
                     <i class="ri-time-line site-header-icon" aria-hidden="true"></i>
-                    <?php /* Lun-Jue 08:00-20:00 • Vie 08:00-18:00 */ ?>
-                    <?php echo esc_html__( 'Lun-Jue 08:00-20:00 • Vie 08:00-18:00', 'viu-fcsd' ); ?>
+                    <?php /* Dl-Dj 08:00-20:00 • Dv 08:00-18:00 */ ?>
+                    <?php echo esc_html__( 'Dl-Dj 08:00-20:00 • Dv 08:00-18:00', 'viu-fcsd' ); ?>
                 </p>
             </div>
 
@@ -36,7 +36,7 @@
 
             <!-- Redes sociales oficiales FCSD -->
             <div class="col col--social ms-auto">
-                <ul class="social-icon" aria-label="<?php esc_attr_e( 'Redes sociales', 'viu-fcsd' ); ?>">
+                <ul class="social-icon" aria-label="<?php esc_attr_e( 'Xarxes socials', 'viu-fcsd' ); ?>">
                     <li>
                         <a href="https://fcsd.org/" class="social-icon-link" aria-label="Web FCSD" rel="noopener">
                             <i class="ri-global-line" aria-hidden="true"></i>
@@ -78,16 +78,16 @@
             <!-- Buscador -->
             <button class="c-header__search-toggle" aria-controls="site-search" aria-expanded="false">
                 <i class="ri-search-line" aria-hidden="true"></i>
-                <span class="screen-reader-text"><?php esc_html_e( 'Buscar', 'viu-fcsd' ); ?></span>
+                <span class="screen-reader-text"><?php esc_html_e( 'Cerca', 'viu-fcsd' ); ?></span>
             </button>
 
             <!-- Dark mode -->
-            <button class="c-header__dark-toggle" aria-label="<?php esc_attr_e( 'Cambiar tema', 'viu-fcsd' ); ?>">
+            <button class="c-header__dark-toggle" aria-label="<?php esc_attr_e( 'Canvia el tema', 'viu-fcsd' ); ?>">
                 <i class="ri-contrast-2-line" aria-hidden="true"></i>
             </button>
 
             <!-- Carrito -->
-            <a class="c-header__cart" href="#" role="button" aria-label="<?php esc_attr_e( 'Ver carrito', 'viu-fcsd' ); ?>">
+            <a class="c-header__cart" href="#" role="button" aria-label="<?php esc_attr_e( 'Veure la cistella', 'viu-fcsd' ); ?>">
                 <i class="ri-shopping-cart-line" aria-hidden="true"></i>
             </a>
 
@@ -100,17 +100,17 @@
             $dashboard_url = $dashboard_page ? get_permalink($dashboard_page->ID) : home_url('/account');
             ?>
             <?php if ( is_user_logged_in() ) : ?>
-                <a class="c-header__account is-logged" href="<?php echo esc_url( $dashboard_url ); ?>" aria-label="<?php esc_attr_e( 'Mi cuenta', 'viu-fcsd' ); ?>">
+                <a class="c-header__account is-logged" href="<?php echo esc_url( $dashboard_url ); ?>" aria-label="<?php esc_attr_e( 'El meu compte', 'viu-fcsd' ); ?>">
                     <i class="ri-user-3-line" aria-hidden="true"></i>
                 </a>
-                <a class="c-header__logout" href="<?php echo esc_url( wp_logout_url( home_url('/account') ) ); ?>" aria-label="<?php esc_attr_e( 'Cerrar sesión', 'viu-fcsd' ); ?>">
+                <a class="c-header__logout" href="<?php echo esc_url( wp_logout_url( home_url('/account') ) ); ?>" aria-label="<?php esc_attr_e( 'Tanca la sessió', 'viu-fcsd' ); ?>">
                     <i class="ri-logout-box-line" aria-hidden="true"></i>
                 </a>
             <?php else : ?>
-                <a class="c-header__account" href="<?php echo esc_url( $account_url ); ?>" aria-label="<?php esc_attr_e( 'Iniciar sesión', 'viu-fcsd' ); ?>">
+                <a class="c-header__account" href="<?php echo esc_url( $account_url ); ?>" aria-label="<?php esc_attr_e( 'Inicia sessió', 'viu-fcsd' ); ?>">
                     <i class="ri-user-3-line" aria-hidden="true"></i>
                 </a>
-                <a class="c-header__register" href="<?php echo esc_url( add_query_arg( 'tab', 'register', $account_url ) ); ?>" aria-label="<?php esc_attr_e( 'Registrarse', 'viu-fcsd' ); ?>">
+                <a class="c-header__register" href="<?php echo esc_url( add_query_arg( 'tab', 'register', $account_url ) ); ?>" aria-label="<?php esc_attr_e( 'Registrar-se', 'viu-fcsd' ); ?>">
                     <i class="ri-user-add-line" aria-hidden="true"></i>
                 </a>
             <?php endif; ?>

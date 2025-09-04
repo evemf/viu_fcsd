@@ -7,15 +7,15 @@ if ( ! defined('ABSPATH') ) { exit; }
 add_action('after_switch_theme', function(){
   $pages = [
     'account' => [
-      'post_title'   => __('Cuenta', 'viu-fcsd'),
+      'post_title'   => __('Compte', 'viu-fcsd'),
       'post_content' => '[viu_account]',
     ],
     'account-dashboard' => [
-      'post_title'   => __('Mi cuenta', 'viu-fcsd'),
+      'post_title'   => __('El meu compte', 'viu-fcsd'),
       'post_content' => '[viu_account_dashboard]',
     ],
     'password-reset' => [
-      'post_title'   => __('Recuperar contraseña', 'viu-fcsd'),
+      'post_title'   => __('Recuperar contrasenya', 'viu-fcsd'),
       'post_content' => '[viu_password_reset]',
     ],
   ];
@@ -130,7 +130,7 @@ add_shortcode('viu_account', function(){
   <section class="container" style="max-width:960px;margin:40px auto;">
     <div class="auth-card">
       <!-- Tabs -->
-      <div class="auth-card__tabs" role="tablist" aria-label="<?php esc_attr_e('Cuenta','viu-fcsd'); ?>">
+      <div class="auth-card__tabs" role="tablist" aria-label="<?php esc_attr_e('Compte','viu-fcsd'); ?>">
         <button class="auth-tab <?php echo $initial_tab==='login' ? 'is-active' : ''; ?>"
                 data-tab="login" id="tab-login" role="tab"
                 aria-controls="panel-login"
@@ -205,7 +205,7 @@ add_shortcode('viu_account_dashboard', function(){
   <section class="container" style="max-width:1100px;margin:40px auto;">
     <div class="auth-card">
       <div class="auth-card__header">
-        <h2 class="auth-title"><?php esc_html_e('Mi cuenta','viu-fcsd'); ?></h2>
+        <h2 class="auth-title"><?php esc_html_e('El meu compte','viu-fcsd'); ?></h2>
       </div>
       <?php echo $ok ? viu_notice($ok, 'success') : ''; ?>
 
@@ -243,7 +243,7 @@ add_shortcode('viu_account_dashboard', function(){
             <fieldset class="auth-fieldset">
               <legend><?php esc_html_e('Cambiar contraseña (opcional)','viu-fcsd'); ?></legend>
               <label>
-                <span><?php esc_html_e('Nueva contraseña','viu-fcsd'); ?></span>
+                <span><?php esc_html_e('Nova contrasenya','viu-fcsd'); ?></span>
                 <input type="password" name="pass1" autocomplete="new-password" minlength="6" />
               </label>
               <label>
@@ -253,7 +253,7 @@ add_shortcode('viu_account_dashboard', function(){
             </fieldset>
             <div style="display:flex;gap:8px;align-items:center;">
               <button type="submit" class="button"><?php esc_html_e('Guardar cambios','viu-fcsd'); ?></button>
-              <a class="button button--ghost" href="<?php echo esc_url( wp_logout_url( home_url('/account') ) ); ?>"><?php esc_html_e('Cerrar sesión','viu-fcsd'); ?></a>
+              <a class="button button--ghost" href="<?php echo esc_url( wp_logout_url( home_url('/account') ) ); ?>"><?php esc_html_e('Tanca la sessió','viu-fcsd'); ?></a>
             </div>
           </form>
         </div>
@@ -324,7 +324,7 @@ add_shortcode('viu_password_reset', function(){
   <section class="container" style="max-width:720px;margin:40px auto;">
     <div class="auth-card">
       <div class="auth-card__header">
-        <h2 class="auth-title"><?php echo $key && $login ? esc_html__('Nueva contraseña','viu-fcsd') : esc_html__('Recuperar contraseña','viu-fcsd'); ?></h2>
+        <h2 class="auth-title"><?php echo $key && $login ? esc_html__('Nova contrasenya','viu-fcsd') : esc_html__('Recuperar contrasenya','viu-fcsd'); ?></h2>
       </div>
       <div class="auth-card__content">
         <?php if (!$key || !$login): ?>
@@ -340,7 +340,7 @@ add_shortcode('viu_password_reset', function(){
             <input type="hidden" name="key" value="<?php echo esc_attr($key); ?>">
             <input type="hidden" name="login" value="<?php echo esc_attr($login); ?>">
             <label>
-              <span><?php esc_html_e('Nueva contraseña','viu-fcsd'); ?></span>
+              <span><?php esc_html_e('Nova contrasenya','viu-fcsd'); ?></span>
               <input type="password" name="pass1" required autocomplete="new-password" minlength="6"/>
             </label>
             <label>
@@ -404,7 +404,7 @@ function viu_handle_register(){
 
   $dash = get_page_by_path('account-dashboard');
   $url  = $dash ? get_permalink($dash->ID) : home_url('/account-dashboard');
-  wp_safe_redirect( add_query_arg('ok', urlencode(__('Cuenta creada con éxito','viu-fcsd')), $url) ); exit;
+  wp_safe_redirect( add_query_arg('ok', urlencode(__('Compte creat amb èxit','viu-fcsd')), $url) ); exit;
 }
 
 add_action('admin_post_viu_logout','viu_handle_logout');

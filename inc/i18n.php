@@ -32,7 +32,8 @@ function viu_fcsd_switch_url( $lang ) {
         return home_url( '/' );
     }
 
-    $path     = trim( $_SERVER['REQUEST_URI'], '/' );
+    global $wp;
+    $path     = trim( $wp->request ?? '', '/' );
     $segments = $path ? explode( '/', $path ) : [];
 
     if ( $segments && in_array( $segments[0], viu_fcsd_languages(), true ) ) {
@@ -52,7 +53,7 @@ add_filter( 'query_vars', function ( $vars ) {
 add_action( 'init', function () {
     $langs = implode( '|', viu_fcsd_languages() );
     add_rewrite_rule( '^(' . $langs . ')/(.*)/?$', 'index.php?lang=$matches[1]&pagename=$matches[2]', 'top' );
-    add_rewrite_rule( '^(' . $langs . ')/?$', 'index.php?lang=$matches[1]&pagename=$matches[1]', 'top' );
+    add_rewrite_rule( '^(' . $langs . ')/?$', 'index.php?lang=$matches[1]', 'top' );
 } );
 
 add_filter( 'locale', function ( $locale ) {

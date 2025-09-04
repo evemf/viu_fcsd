@@ -141,7 +141,7 @@ $cats = get_terms([
 
     <!-- ===== Layout tienda: Sidebar filtros (25%) + Grid productos (75%) ===== -->
     <section class="store-layout" aria-labelledby="store-catalog-title">
-      <h2 id="store-catalog-title" class="screen-reader-text"><?php esc_html_e('Catálogo','viu-fcsd'); ?></h2>
+      <h2 id="store-catalog-title" class="screen-reader-text"><?php esc_html_e('Catàleg','viu-fcsd'); ?></h2>
 
       <!-- Sidebar filtros -->
       <aside class="store-filters" aria-labelledby="filters-title">
@@ -149,17 +149,17 @@ $cats = get_terms([
 
         <form method="get" class="store-filters__form" action="<?php echo esc_url( get_post_type_archive_link('product') ); ?>">
 
-          <!-- Búsqueda -->
+          <!-- Cerca -->
           <label class="store-filter__block">
-            <span class="store-filter__label"><?php esc_html_e('Buscar','viu-fcsd'); ?></span>
-            <input type="search" name="s" value="<?php echo esc_attr($search); ?>" placeholder="<?php esc_attr_e('Buscar productos…','viu-fcsd'); ?>" />
+            <span class="store-filter__label"><?php esc_html_e('Cerca','viu-fcsd'); ?></span>
+            <input type="search" name="s" value="<?php echo esc_attr($search); ?>" placeholder="<?php esc_attr_e('Cerca productes…','viu-fcsd'); ?>" />
           </label>
 
-          <!-- Categoría -->
+          <!-- Categoria -->
           <label class="store-filter__block">
-            <span class="store-filter__label"><?php esc_html_e('Categoría','viu-fcsd'); ?></span>
+            <span class="store-filter__label"><?php esc_html_e('Categoria','viu-fcsd'); ?></span>
             <select name="cat">
-              <option value="0"><?php esc_html_e('Todas','viu-fcsd'); ?></option>
+              <option value="0"><?php esc_html_e('Totes','viu-fcsd'); ?></option>
               <?php foreach( $cats as $c ) : ?>
                 <option value="<?php echo esc_attr($c->term_id); ?>" <?php selected($cat, $c->term_id); ?>>
                   <?php echo esc_html($c->name); ?>

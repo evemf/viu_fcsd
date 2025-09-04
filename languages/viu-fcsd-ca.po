@@ -7,82 +7,206 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: inc/setup.php:17
-msgid "Primary Menu"
+#: inc/setup.php
+msgid "Menú principal"
 msgstr "Menú principal"
 
-#: inc/setup.php:18 footer.php:3
-msgid "Footer Menu"
+#: inc/setup.php footer.php
+msgid "Menú del peu"
 msgstr "Menú del peu"
 
-#: templates/partials/language-switcher.php:7
-msgid "Català"
-msgstr "Català"
+#: header.php
+msgid "Anar al contingut"
+msgstr "Anar al contingut"
 
-#: templates/partials/language-switcher.php:8
-msgid "Español"
-msgstr "Espanyol"
+#: header.php
+msgid "Dl-Dj 08:00-20:00 • Dv 08:00-18:00"
+msgstr "Dl-Dj 08:00-20:00 • Dv 08:00-18:00"
 
-#: templates/partials/language-switcher.php:9
-msgid "English"
-msgstr "Anglès"
+#: header.php footer.php
+msgid "Xarxes socials"
+msgstr "Xarxes socials"
 
-#: search.php:3
-msgid "Search Results for: %s"
-msgstr "Resultats de la cerca per a: %s"
+#: header.php archive-product.php
+msgid "Cerca"
+msgstr "Cerca"
 
-#: front-page.php:5
-msgid "Welcome to FCSD"
-msgstr "Benvinguts a FCSD"
+#: header.php
+msgid "Canvia el tema"
+msgstr "Canvia el tema"
 
-#: front-page.php:6
-msgid "Together we build the future."
+#: header.php
+msgid "Veure la cistella"
+msgstr "Veure la cistella"
+
+#: header.php inc/account.php page-account.php
+msgid "El meu compte"
+msgstr "El meu compte"
+
+#: header.php inc/account.php
+msgid "Tanca la sessió"
+msgstr "Tanca la sessió"
+
+#: header.php page-account.php
+msgid "Inicia sessió"
+msgstr "Inicia sessió"
+
+#: header.php page-account.php
+msgid "Registrar-se"
+msgstr "Registrar-se"
+
+#: footer.php
+msgid "Treballem per la plena inclusió i igualtat de drets."
+msgstr "Treballem per la plena inclusió i igualtat de drets."
+
+#: footer.php
+msgid "Donar"
+msgstr "Donar"
+
+#: footer.php
+msgid "Mapa de localització"
+msgstr "Mapa de localització"
+
+#: footer.php
+msgid "Mapa de la seu"
+msgstr "Mapa de la seu"
+
+#: footer.php
+msgid "Com arribar-hi"
+msgstr "Com arribar-hi"
+
+#: inc/account.php
+msgid "Compte"
+msgstr "Compte"
+
+#: inc/account.php
+msgid "Recuperar contrasenya"
+msgstr "Recuperar contrasenya"
+
+#: inc/account.php
+msgid "Nova contrasenya"
+msgstr "Nova contrasenya"
+
+#: inc/account.php
+msgid "Compte creat amb èxit"
+msgstr "Compte creat amb èxit"
+
+#: page-account.php
+msgid "Salta al contingut"
+msgstr "Salta al contingut"
+
+#: page-account.php
+msgid "Inicia sessió o crea un compte nou"
+msgstr "Inicia sessió o crea un compte nou"
+
+#: page-account.php
+msgid "Autenticació"
+msgstr "Autenticació"
+
+#: archive-product.php
+msgid "Catàleg"
+msgstr "Catàleg"
+
+#: archive-product.php
+msgid "Cerca productes…"
+msgstr "Cerca productes…"
+
+#: archive-product.php
+msgid "Categoria"
+msgstr "Categoria"
+
+#: archive-product.php
+msgid "Totes"
+msgstr "Totes"
+
+#: archive-service.php inc/services.php templates
+msgid "Serveis"
+msgstr "Serveis"
+
+#: archive-service.php
+msgid "Els nostres serveis"
+msgstr "Els nostres serveis"
+
+#: archive-service.php
+msgid "Veure servei"
+msgstr "Veure servei"
+
+#: inc/services.php archive-service.php
+msgid "Encara no hi ha serveis."
+msgstr "Encara no hi ha serveis."
+
+#: single-service.php
+msgid "Servei"
+msgstr "Servei"
+
+#: single-service.php
+msgid "Torna als serveis"
+msgstr "Torna als serveis"
+
+#: front-page.php
+msgid "Benvinguts a la FCSD"
+msgstr "Benvinguts a la FCSD"
+
+#: front-page.php
+msgid "Junts construïm el futur."
 msgstr "Junts construïm el futur."
 
-#: front-page.php:7
-msgid "Donate"
-msgstr "Dona"
+#: front-page.php
+msgid "Fes una donació"
+msgstr "Fes una donació"
 
-#: archive.php:15 index.php:10
-msgid "No posts found"
-msgstr "No s'han trobat entrades"
+#: front-page.php
+msgid "Productes destacats"
+msgstr "Productes destacats"
 
-#: header.php:12
-msgid "Skip to content"
-msgstr "Vés al contingut"
+#: search.php
+msgid "Resultats de la cerca per a: %s"
+msgstr "Resultats de la cerca per a: %s"
 
-#: header.php:19
-msgid "Menu"
-msgstr "Menú"
+#: search.php
+msgid "No s'han trobat resultats."
+msgstr "No s'han trobat resultats."
 
-#: header.php:23
-msgid "Primary menu"
-msgstr "Menú principal"
-
-#: header.php:36
-msgid "User access"
-msgstr "Accés d'usuari"
-
-#: templates/partials/language-switcher.php:15 templates/partials/language-switcher.php:27
-msgid "Language selector"
-msgstr "Selector de llengua"
-
-#: templates/partials/language-switcher.php:16
-msgid "Choose language"
-msgstr "Escull l'idioma"
-
-#: index.php:3
-msgid "Latest Posts"
+#: index.php
+msgid "Entrades recents"
 msgstr "Entrades recents"
 
-#: 404.php:3
-msgid "Page not found"
+#: archive.php index.php
+msgid "No s'han trobat entrades"
+msgstr "No s'han trobat entrades"
+
+#: 404.php
+msgid "Pàgina no trobada"
 msgstr "Pàgina no trobada"
 
-#: 404.php:4
-msgid "Sorry, the page you are looking for could not be found."
-msgstr "Ho sentim, no s'ha pogut trobar la pàgina que cerques."
+#: 404.php
+msgid "Ho sentim, no s'ha trobat la pàgina que busques."
+msgstr "Ho sentim, no s'ha trobat la pàgina que busques."
 
-#: search.php:10
-msgid "No results found."
-msgstr "No s'han trobat resultats."
+#: inc/services.php
+msgid "Com podem ajudar-te?"
+msgstr "Com podem ajudar-te?"
+
+#: single-product.php
+msgid "Subscriu-te"
+msgstr "Subscriu-te"
+
+#: single-product.php
+msgid "Compra ara"
+msgstr "Compra ara"
+
+#: single-product.php
+msgid "Tanca"
+msgstr "Tanca"
+
+#: single-product.php
+msgid "Finalitza la compra"
+msgstr "Finalitza la compra"
+
+#: single-product.php
+msgid "Email (rebut i accés):"
+msgstr "Email (rebut i accés):"
+
+#: single-product.php
+msgid "Paga"
+msgstr "Paga"

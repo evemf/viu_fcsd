@@ -13,7 +13,7 @@ $interval_count = (int)(get_post_meta($id,'_viu_interval_count', true) ?: 1);
     <div class="container">
       <article class="product-single">
         <header class="product-single__header">
-          <small class="small-title">Service <strong class="text-warning">•</strong></small>
+          <small class="small-title"><?php esc_html_e('Servei', 'viu-fcsd'); ?> <strong class="text-warning">•</strong></small>
           <h1 class="product-single__title"><?php the_title(); ?></h1>
           <?php if (has_post_thumbnail()): ?>
             <div class="product-single__image"><?php the_post_thumbnail('large'); ?></div>
@@ -30,7 +30,7 @@ $interval_count = (int)(get_post_meta($id,'_viu_interval_count', true) ?: 1);
               ?>
             </div>
             <button class="custom-btn btn custom-link js-buy" data-product="<?php echo esc_attr($id); ?>">
-              <?php echo $is_sub ? esc_html__('Subscribe','viu-fcsd') : esc_html__('Buy now','viu-fcsd'); ?>
+              <?php echo $is_sub ? esc_html__('Subscriu-te','viu-fcsd') : esc_html__('Compra ara','viu-fcsd'); ?>
             </button>
           </div>
         </div>
@@ -41,16 +41,16 @@ $interval_count = (int)(get_post_meta($id,'_viu_interval_count', true) ?: 1);
   <!-- Reusa el modal del shortcode si quieres, o pinta uno propio -->
   <div class="store-modal" id="store-modal" hidden>
     <div class="store-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="store-modal-title">
-      <button class="store-modal__close" aria-label="<?php esc_attr_e('Cerrar','viu-fcsd'); ?>">&times;</button>
-      <h3 id="store-modal-title"><?php esc_html_e('Finalizar compra','viu-fcsd'); ?></h3>
+      <button class="store-modal__close" aria-label="<?php esc_attr_e('Tanca','viu-fcsd'); ?>">&times;</button>
+      <h3 id="store-modal-title"><?php esc_html_e('Finalitza la compra','viu-fcsd'); ?></h3>
       <form id="store-checkout-form">
         <input type="hidden" name="product_id" id="store-product-id" value="<?php echo esc_attr($id); ?>">
         <label>
-          <?php esc_html_e('Email (recibo y acceso):','viu-fcsd'); ?>
+          <?php esc_html_e('Email (rebut i accés):','viu-fcsd'); ?>
           <input type="email" name="email" id="store-email" required>
         </label>
         <button type="submit" class="button button-primary" id="store-pay-btn">
-          <?php esc_html_e('Pagar','viu-fcsd'); ?>
+          <?php esc_html_e('Paga','viu-fcsd'); ?>
         </button>
       </form>
       <div id="paypal-buttons-container" style="display:none;"></div>

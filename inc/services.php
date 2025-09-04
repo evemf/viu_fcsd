@@ -10,20 +10,20 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
  */
 function viu_register_services_cpt() {
     $labels = [
-        'name'               => _x( 'Servicios', 'post type general name', 'viu-fcsd' ),
-        'singular_name'      => _x( 'Servicio', 'post type singular name', 'viu-fcsd' ),
-        'menu_name'          => _x( 'Servicios', 'admin menu', 'viu-fcsd' ),
-        'name_admin_bar'     => _x( 'Servicio', 'add new on admin bar', 'viu-fcsd' ),
-        'add_new'            => _x( 'Añadir nuevo', 'service', 'viu-fcsd' ),
-        'add_new_item'       => __( 'Añadir nuevo servicio', 'viu-fcsd' ),
-        'new_item'           => __( 'Nuevo servicio', 'viu-fcsd' ),
-        'edit_item'          => __( 'Editar servicio', 'viu-fcsd' ),
-        'view_item'          => __( 'Ver servicio', 'viu-fcsd' ),
-        'all_items'          => __( 'Todos los servicios', 'viu-fcsd' ),
-        'search_items'       => __( 'Buscar servicios', 'viu-fcsd' ),
-        'parent_item_colon'  => __( 'Servicio padre:', 'viu-fcsd' ),
-        'not_found'          => __( 'No se han encontrado servicios.', 'viu-fcsd' ),
-        'not_found_in_trash' => __( 'No hay servicios en la papelera.', 'viu-fcsd' )
+        'name'               => _x( 'Serveis', 'post type general name', 'viu-fcsd' ),
+        'singular_name'      => _x( 'Servei', 'post type singular name', 'viu-fcsd' ),
+        'menu_name'          => _x( 'Serveis', 'admin menu', 'viu-fcsd' ),
+        'name_admin_bar'     => _x( 'Servei', 'add new on admin bar', 'viu-fcsd' ),
+        'add_new'            => _x( 'Afegeix nou', 'service', 'viu-fcsd' ),
+        'add_new_item'       => __( 'Afegeix un nou servei', 'viu-fcsd' ),
+        'new_item'           => __( 'Nou servei', 'viu-fcsd' ),
+        'edit_item'          => __( 'Edita servei', 'viu-fcsd' ),
+        'view_item'          => __( 'Veure servei', 'viu-fcsd' ),
+        'all_items'          => __( 'Tots els serveis', 'viu-fcsd' ),
+        'search_items'       => __( 'Cerca serveis', 'viu-fcsd' ),
+        'parent_item_colon'  => __( 'Servei pare:', 'viu-fcsd' ),
+        'not_found'          => __( 'No s\'han trobat serveis.', 'viu-fcsd' ),
+        'not_found_in_trash' => __( 'No hi ha serveis a la paperera.', 'viu-fcsd' )
     ];
 
     $args = [
@@ -34,7 +34,7 @@ function viu_register_services_cpt() {
         'show_in_menu'       => true,
         'menu_icon'          => 'dashicons-hammer', // cambia si quieres
         'query_var'          => true,
-        'rewrite'            => [ 'slug' => 'servicios', 'with_front' => false ],
+        'rewrite'            => [ 'slug' => 'serveis', 'with_front' => false ],
         'capability_type'    => 'post',
         'has_archive'        => true,
         'hierarchical'       => false,
@@ -53,8 +53,8 @@ add_action( 'init', 'viu_register_services_cpt' );
  */
 function viu_services_section_shortcode( $atts = [] ) {
     $atts = shortcode_atts( [
-        'title' => __( 'How can we help you?', 'viu-fcsd' ),
-        'subtitle' => __( 'Services', 'viu-fcsd' ),
+        'title' => __( 'Com podem ajudar-te?', 'viu-fcsd' ),
+        'subtitle' => __( 'Serveis', 'viu-fcsd' ),
         'index' => '03/05',
         'limit' => 6,
         'order' => 'ASC',
@@ -62,7 +62,7 @@ function viu_services_section_shortcode( $atts = [] ) {
         'ids' => '', // opcional: "12,31,44" para forzar orden
         'image_size' => 'large',
         'show_excerpt' => '1',
-        'cta_label' => __( 'Ver servicio', 'viu-fcsd' ),
+        'cta_label' => __( 'Veure servei', 'viu-fcsd' ),
     ], $atts, 'services_section' );
 
     $ids = array_filter( array_map( 'absint', explode( ',', $atts['ids'] ) ) );
@@ -92,7 +92,7 @@ function viu_services_section_shortcode( $atts = [] ) {
 
                 <?php if ( $q->have_posts() ) : ?>
                     <div class="services__wrap">
-                        <nav class="services__tabs" role="tablist" aria-label="<?php esc_attr_e( 'Servicios', 'viu-fcsd' ); ?>">
+                        <nav class="services__tabs" role="tablist" aria-label="<?php esc_attr_e( 'Serveis', 'viu-fcsd' ); ?>">
                             <?php
                             $i = 0;
                             while ( $q->have_posts() ) :
@@ -166,7 +166,7 @@ function viu_services_section_shortcode( $atts = [] ) {
                         </div>
                     </div>
                 <?php else : ?>
-                    <p><?php esc_html_e( 'Aún no hay servicios publicados.', 'viu-fcsd' ); ?></p>
+                    <p><?php esc_html_e( 'Encara no hi ha serveis publicats.', 'viu-fcsd' ); ?></p>
                 <?php endif; ?>
             </div>
         </div>

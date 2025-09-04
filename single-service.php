@@ -8,7 +8,7 @@ get_header(); ?>
   <article <?php post_class('service-single'); ?>>
     <header class="service-single__header container">
       <p class="small-title">
-        <?php esc_html_e('Service', 'viu-fcsd'); ?>
+        <?php esc_html_e('Servei', 'viu-fcsd'); ?>
         <strong class="text-warning">•</strong>
       </p>
       <h1 class="service-single__title"><?php the_title(); ?></h1>
@@ -23,7 +23,7 @@ get_header(); ?>
       <?php while ( have_posts() ) : the_post(); the_content(); endwhile; ?>
       <p class="service-single__back">
         <a class="custom-btn btn custom-link" href="<?php echo esc_url( get_post_type_archive_link('service') ); ?>">
-          <?php esc_html_e('Volver a servicios', 'viu-fcsd'); ?>
+          <?php esc_html_e('Torna als serveis', 'viu-fcsd'); ?>
         </a>
       </p>
     </div>

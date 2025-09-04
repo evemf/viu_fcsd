@@ -28,7 +28,7 @@ $register_show   = $initial_tab === 'register' ? 'show active' : '';
 $ok  = isset($_GET['ok'])  ? sanitize_text_field(wp_unslash($_GET['ok']))  : '';
 $err = isset($_GET['err']) ? sanitize_text_field(wp_unslash($_GET['err'])) : '';
 ?>
-<a class="skip-link screen-reader-text" href="#contenido-principal"><?php esc_html_e('Saltar al contenido','viu-fcsd'); ?></a>
+<a class="skip-link screen-reader-text" href="#contenido-principal"><?php esc_html_e('Salta al contingut','viu-fcsd'); ?></a>
 
 <div id="primary" class="content-area">
   <main id="main" class="site-main" role="main">
@@ -40,7 +40,7 @@ $err = isset($_GET['err']) ? sanitize_text_field(wp_unslash($_GET['err'])) : '';
 
       <div class="container hero__card" aria-hidden="false">
         <h1 class="hero__title"><?php the_title(); ?></h1>
-        <p class="hero__lead"><?php esc_html_e('Inicia sesión o crea una cuenta nueva','viu-fcsd'); ?></p>
+        <p class="hero__lead"><?php esc_html_e('Inicia sessió o crea un compte nou','viu-fcsd'); ?></p>
       </div>
     </header>
 
@@ -49,7 +49,7 @@ $err = isset($_GET['err']) ? sanitize_text_field(wp_unslash($_GET['err'])) : '';
       <div class="container">
         <div class="auth-wrapper">
 
-          <div class="auth-card card card--elevated" role="region" aria-label="<?php esc_attr_e('Autenticación','viu-fcsd'); ?>">
+          <div class="auth-card card card--elevated" role="region" aria-label="<?php esc_attr_e('Autenticació','viu-fcsd'); ?>">
 
             <!-- Pestañas -->
             <ul class="nav nav-tabs auth-tabs" role="tablist" data-auth-tabs>
@@ -60,7 +60,7 @@ $err = isset($_GET['err']) ? sanitize_text_field(wp_unslash($_GET['err'])) : '';
                   role="tab"
                   aria-controls="login-tab"
                   aria-selected="<?php echo $initial_tab === 'login' ? 'true' : 'false'; ?>">
-                  <?php esc_html_e('Iniciar sesión', 'viu-fcsd'); ?>
+                  <?php esc_html_e('Inicia sessió', 'viu-fcsd'); ?>
                 </button>
               </li>
               <li class="nav-item" role="presentation">
@@ -70,7 +70,7 @@ $err = isset($_GET['err']) ? sanitize_text_field(wp_unslash($_GET['err'])) : '';
                   role="tab"
                   aria-controls="register-tab"
                   aria-selected="<?php echo $initial_tab === 'register' ? 'true' : 'false'; ?>">
-                  <?php esc_html_e('Registrarse', 'viu-fcsd'); ?>
+                  <?php esc_html_e('Registrar-se', 'viu-fcsd'); ?>
                 </button>
               </li>
             </ul>

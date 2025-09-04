@@ -58,9 +58,9 @@
         </ul>
       </div>
 
-      <!-- Redes sociales -->
+      <!-- Xarxes socials -->
       <div class="c-footer__social">
-        <ul class="social-icon" aria-label="<?php esc_attr_e( 'Redes sociales', 'viu-fcsd' ); ?>">
+        <ul class="social-icon" aria-label="<?php esc_attr_e( 'Xarxes socials', 'viu-fcsd' ); ?>">
           <li><a href="https://fcsd.org/" class="social-icon-link" aria-label="Web FCSD" rel="noopener"><i class="ri-global-line" aria-hidden="true"></i></a></li>
           <li><a href="https://www.facebook.com/fundaciocatalanasindromededown/" class="social-icon-link" aria-label="Facebook" rel="noopener"><i class="ri-facebook-fill" aria-hidden="true"></i></a></li>
           <li><a href="https://www.instagram.com/fcsdown/" class="social-icon-link" aria-label="Instagram" rel="noopener"><i class="ri-instagram-line" aria-hidden="true"></i></a></li>
@@ -72,10 +72,10 @@
 
     <!-- Mapa (misma dirección del customizer) -->
     <?php if ( ! empty( $address_line ) ) : ?>
-      <div class="c-footer__map" aria-label="<?php esc_attr_e( 'Mapa de localización', 'viu-fcsd' ); ?>">
+      <div class="c-footer__map" aria-label="<?php esc_attr_e( 'Mapa de localització', 'viu-fcsd' ); ?>">
         <iframe
           class="google-map"
-          title="<?php esc_attr_e( 'Mapa de la sede', 'viu-fcsd' ); ?>"
+          title="<?php esc_attr_e( 'Mapa de la seu', 'viu-fcsd' ); ?>"
           src="https://www.google.com/maps?output=embed&q=<?php echo $address_q; ?>"
           width="100%"
           height="300"
@@ -86,7 +86,7 @@
         <p class="c-footer__map-actions">
           <a class="button button--ghost" target="_blank" rel="noopener"
              href="https://www.google.com/maps/search/?api=1&query=<?php echo $address_q; ?>">
-            <?php echo esc_html__( 'Cómo llegar', 'viu-fcsd' ); ?>
+            <?php echo esc_html__( 'Com arribar-hi', 'viu-fcsd' ); ?>
           </a>
         </p>
       </div>

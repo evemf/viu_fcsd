@@ -14,8 +14,8 @@ if ( ! function_exists( 'viu_fcsd_setup' ) ) {
         add_theme_support( 'html5', [ 'search-form', 'gallery', 'caption' ] );
 
         register_nav_menus( [
-            'primary' => __( 'Primary Menu', 'viu-fcsd' ),
-            'footer'  => __( 'Footer Menu', 'viu-fcsd' ),
+            'primary' => __( 'Menú principal', 'viu-fcsd' ),
+            'footer'  => __( 'Menú del peu', 'viu-fcsd' ),
         ] );
 
         add_editor_style( 'assets/css/style.css' );

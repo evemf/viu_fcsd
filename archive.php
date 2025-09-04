@@ -12,7 +12,7 @@
     <?php endwhile; ?>
     <?php the_posts_navigation(); ?>
   <?php else : ?>
-    <p><?php esc_html_e( 'No posts found', 'viu-fcsd' ); ?></p>
+    <p><?php esc_html_e( 'No s\'han trobat entrades', 'viu-fcsd' ); ?></p>
   <?php endif; ?>
 </main>
 <?php get_footer(); ?>
