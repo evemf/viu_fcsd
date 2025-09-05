@@ -3,8 +3,10 @@
  * Site branding.
  */
 
-$current    = function_exists( 'viu_fcsd_current_lang' ) ? viu_fcsd_current_lang() : 'ca';
-$home       = home_url( '/' . $current . '/' );
+$langs      = function_exists( 'viu_fcsd_languages' ) ? viu_fcsd_languages() : [ 'ca' ];
+$default    = $langs[0];
+$current    = function_exists( 'viu_fcsd_current_lang' ) ? viu_fcsd_current_lang() : $default;
+$home       = $current === $default ? home_url( '/' ) : home_url( '/' . $current . '/' );
 $site_name  = get_bloginfo( 'name' );
 $has_logo   = has_custom_logo();
 

@@ -13,6 +13,16 @@ function viu_fcsd_current_lang() {
     $lang  = sanitize_key( $lang );
 
     if ( ! in_array( $lang, $langs, true ) ) {
+        $request  = trim( parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
+        $segments = $request ? explode( '/', $request ) : [];
+        $first    = $segments[0] ?? '';
+
+        if ( in_array( $first, $langs, true ) ) {
+            $lang = $first;
+        }
+    }
+
+    if ( ! in_array( $lang, $langs, true ) ) {
         $lang = isset( $_COOKIE['viu_lang'] ) ? sanitize_key( $_COOKIE['viu_lang'] ) : '';
         if ( ! in_array( $lang, $langs, true ) ) {
             $lang = 'ca';
@@ -27,20 +37,26 @@ function viu_fcsd_current_lang() {
 }
 
 function viu_fcsd_switch_url( $lang ) {
-    $lang = sanitize_key( $lang );
-    if ( ! in_array( $lang, viu_fcsd_languages(), true ) ) {
+    $langs   = viu_fcsd_languages();
+    $default = $langs[0];
+    $lang    = sanitize_key( $lang );
+
+    if ( ! in_array( $lang, $langs, true ) ) {
         return home_url( '/' );
     }
 
-    global $wp;
-    $path     = trim( $wp->request ?? '', '/' );
-    $segments = $path ? explode( '/', $path ) : [];
+    $request  = trim( parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
+    $segments = $request ? explode( '/', $request ) : [];
 
-    if ( $segments && in_array( $segments[0], viu_fcsd_languages(), true ) ) {
+    if ( $segments && in_array( $segments[0], $langs, true ) ) {
         array_shift( $segments );
     }
 
     $path = implode( '/', $segments );
+
+    if ( $lang === $default ) {
+        return esc_url( home_url( '/' . $path ) );
+    }
 
     return esc_url( home_url( '/' . $lang . '/' . $path ) );
 }
